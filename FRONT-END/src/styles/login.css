@@ -1,0 +1,119 @@
+/* Contenedor principal del login */
+.login-container {
+  width: 90%; /* Ajuste al 90% en pantallas pequeñas */
+  max-width: 400px; /* Aumento del ancho máximo para pantallas más grandes */
+  padding: 2rem; /* Ajuste del espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  background: linear-gradient(
+    145deg,
+    #f9f3ec,
+    #e4dcd5
+  ); /* Gradiente suave para el fondo */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra para darle profundidad */
+  position: absolute; /* Posición centrada en la pantalla */
+  top: 50%; /* 50% desde la parte superior */
+  left: 50%; /* 50% desde la parte izquierda */
+  transform: translate(-50%, -50%); /* Alineación perfecta al centro */
+  display: flex;
+  flex-direction: column; /* Apilado vertical de los elementos */
+  align-items: center;
+  text-align: center;
+}
+
+/* Estilos para el formulario de login */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Aumento del espacio entre los elementos */
+  width: 100%; /* Toma todo el ancho del contenedor */
+}
+
+/* Estilos para los campos de entrada (input) */
+input {
+  padding: 14px; /* Aumento del espaciado interno de los campos */
+  border: 1px solid #ccc; /* Borde gris claro */
+  border-radius: 6px; /* Bordes redondeados */
+  font-size: 1rem; /* Tamaño de texto adecuado */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interna para profundidad */
+  transition: border-color 0.3s; /* Transición suave al cambiar el color del borde */
+}
+
+/* Efecto de enfoque (focus) en los campos de entrada */
+input:focus {
+  border-color: #4caf50; /* Borde verde cuando el campo está en foco */
+  outline: none; /* Eliminar el borde azul por defecto */
+}
+
+/* Estilos del botón de enviar */
+button {
+  padding: 14px; /* Aumento del espaciado interno */
+  background-color: #4caf50; /* Fondo verde */
+  color: white; /* Texto blanco */
+  border: none; /* Sin borde */
+  border-radius: 6px; /* Bordes redondeados */
+  font-size: 1rem; /* Tamaño de texto */
+  font-weight: bold; /* Texto en negrita */
+  cursor: pointer; /* Cambio de cursor al pasar sobre el botón */
+  transition: background-color 0.3s, transform 0.2s; /* Animaciones suaves para el fondo y desplazamiento */
+}
+
+/* Efecto hover en el botón */
+button:hover {
+  background-color: #45a049; /* Cambio de color a verde más oscuro */
+  transform: translateY(-2px); /* Desplazamiento hacia arriba al hacer hover */
+}
+
+/* Efecto al hacer clic en el botón */
+button:active {
+  transform: translateY(0); /* Vuelve a la posición original al hacer clic */
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem; /* Menos espaciado en pantallas pequeñas */
+    width: 85%; /* Ancho reducido */
+    max-width: 320px; /* Aumento del ancho máximo reducido */
+    border-radius: 6px; /* Bordes más pequeños */
+  }
+
+  input,
+  button {
+    font-size: 0.9rem; /* Reducción de tamaño de fuente */
+    padding: 12px; /* Reducción de espaciado interno */
+  }
+}
+
+/* Estilos para el modo oscuro */
+.dark-mode .login-container {
+  background: linear-gradient(
+    145deg,
+    #2c2c2c,
+    #1a1a1a
+  ); /* Fondo oscuro con gradiente */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2); /* Sombra más suave */
+}
+
+.dark-mode input {
+  border: 1px solid #555; /* Borde gris oscuro para los campos de entrada */
+  background-color: #333; /* Fondo oscuro para los inputs */
+  color: white; /* Texto blanco en los inputs */
+}
+
+.dark-mode input:focus {
+  border-color: #4caf50; /* Mantener borde verde al hacer focus */
+}
+
+.dark-mode button {
+  background-color: #4caf50; /* Fondo verde para el botón */
+  color: white; /* Texto blanco */
+}
+
+.dark-mode button:hover {
+  background-color: #45a049; /* Cambio de color a verde más oscuro */
+}
+
+.dark-mode .login-container,
+.dark-mode form {
+  color: white; /* Texto blanco en el formulario */
+}

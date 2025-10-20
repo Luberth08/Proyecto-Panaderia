@@ -1,0 +1,151 @@
+/* Configuración general del Sidebar */
+.sidebar {
+  width: 60px;
+  height: 100vh;
+  background-color: #f4f4f4;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: width 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.sidebar:hover {
+  width: 200px;
+}
+
+.sidebar h2 {
+  font-size: 1.2em;
+  color: #333;
+  margin: 20px 0;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar:hover h2 {
+  opacity: 1;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar ul li button {
+  background: none;
+  border: none;
+  width: 100%;
+  padding: 15px;
+  font-size: 1em;
+  color: #333;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.sidebar ul li button:hover {
+  background-color: #e0e0e0;
+  color: #007bff;
+}
+
+.sidebar ul li button .icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar ul li button span {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar:hover ul li button span {
+  opacity: 1;
+}
+.sidebar ul li button .icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  filter: brightness(0) saturate(100%) invert(21%) sepia(98%) saturate(7463%)
+    hue-rotate(141deg) brightness(95%) contrast(102%);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.sidebar ul li button:hover .icon {
+  filter: brightness(0) saturate(100%) invert(42%) sepia(24%) saturate(2027%)
+    hue-rotate(150deg) brightness(96%) contrast(99%);
+}
+
+/* Resalta la sección activa */
+.sidebar ul li button.active {
+  background-color: #007bff; /* Fondo resaltado */
+  color: white; /* Color de texto resaltado */
+  border-left: 4px solid #0056b3; /* Línea de borde para énfasis */
+}
+
+.sidebar ul li button.active .icon {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
+    hue-rotate(203deg) brightness(102%) contrast(105%);
+}
+
+.sidebar ul li button:hover {
+  background-color: #e9e9e9;
+}
+
+/* Estilos para el modo oscuro */
+body.dark-mode .sidebar {
+  background-color: #2e3b44; /* Fondo oscuro del sidebar */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .sidebar h2 {
+  color: #ccc; /* Texto claro */
+}
+
+body.dark-mode .sidebar ul li button {
+  color: #ccc; /* Texto claro para los botones */
+  border-bottom: 1px solid #444; /* Bordes más oscuros */
+}
+
+body.dark-mode .sidebar ul li button:hover {
+  background-color: #444; /* Fondo más oscuro al pasar el mouse */
+  color: #007bff;
+}
+
+body.dark-mode .sidebar ul li button.active {
+  background-color: #007bff; /* Fondo resaltado */
+  color: white;
+  border-left: 4px solid #0056b3; /* Línea de borde para énfasis */
+}
+
+body.dark-mode .sidebar ul li button.active .icon {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
+    hue-rotate(203deg) brightness(102%) contrast(105%);
+}
+
+body.dark-mode .sidebar ul li button .icon {
+  filter: brightness(0) saturate(100%) invert(21%) sepia(98%) saturate(7463%)
+    hue-rotate(141deg) brightness(95%) contrast(102%);
+}
+
+body.dark-mode .sidebar ul li button:hover .icon {
+  filter: brightness(0) saturate(100%) invert(42%) sepia(24%) saturate(2027%)
+    hue-rotate(150deg) brightness(96%) contrast(99%);
+}

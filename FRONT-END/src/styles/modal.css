@@ -1,0 +1,119 @@
+/* Fondo semitransparente que cubre toda la pantalla */
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Estilos del contenido del modal */
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Añade sombra para resaltar el modal */
+  width: 90%;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  overflow-y: auto;
+}
+
+/* Estilo de los encabezados */
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Estilo del formulario */
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilo de las etiquetas */
+.modal-content label {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Estilo de los campos de entrada */
+.modal-content input {
+  padding: 8px;
+  font-size: 1rem;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Estilo de los botones */
+.modal-content button {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Estilo para el botón de envío */
+.modal-content button[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Estilo para el botón de cancelación */
+.modal-content button[type="button"] {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%; /* Ajusta el tamaño del modal */
+    padding: 15px; /* Reduce el padding */
+  }
+
+  .modal-content input,
+  .modal-content button {
+    font-size: 0.9rem; /* Ajusta el tamaño de los inputs y botones */
+    padding: 8px; /* Ajusta el padding */
+  }
+}
+
+/* Modo oscuro */
+.dark-mode .modal-background {
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro más opaco */
+}
+
+.dark-mode .modal-content {
+  background-color: #333; /* Fondo oscuro para el modal */
+  color: white; /* Texto blanco en el modal */
+}
+
+.dark-mode .modal-content input {
+  background-color: #555; /* Fondo oscuro para los inputs */
+  border: 1px solid #777; /* Borde oscuro */
+  color: white; /* Texto blanco */
+}
+
+.dark-mode .modal-content button[type="submit"] {
+  background-color: #45a049; /* Fondo verde más oscuro en el modo oscuro */
+}
+
+.dark-mode .modal-content button[type="button"] {
+  background-color: #d32f2f; /* Fondo rojo más oscuro en el modo oscuro */
+}
+
+.dark-mode .modal-content input:focus {
+  border-color: #4caf50; /* Mantener el borde verde en focus */
+}

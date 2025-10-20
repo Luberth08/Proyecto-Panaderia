@@ -1,0 +1,87 @@
+/* Modo claro */
+.reporte-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.filtros-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filtros-form label {
+  font-weight: bold;
+}
+
+.filtros-form input,
+.filtros-form button {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.tabla-container {
+  margin-top: 20px;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th,
+.tabla td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.tabla th {
+  background-color: #f4f4f4;
+  text-align: left;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Modo oscuro */
+.dark-mode .reporte-container {
+  background-color: #2a2a2a; /* Fondo oscuro para el reporte */
+  color: white; /* Texto blanco */
+}
+
+.dark-mode .filtros-form input,
+.dark-mode .filtros-form button {
+  background-color: #444; /* Fondo oscuro y sutil para inputs y botones */
+  color: #bbb; /* Texto gris claro */
+  border: 1px solid #555; /* Borde oscuro y sutil */
+}
+
+.dark-mode .filtros-form input:focus,
+.dark-mode .filtros-form button:focus {
+  border-color: #777; /* Borde más claro al enfocar */
+}
+
+.dark-mode .filtros-form button:hover {
+  background-color: #555; /* Fondo aún más oscuro al hacer hover */
+}
+
+.dark-mode .tabla {
+  background-color: #333; /* Fondo oscuro para la tabla */
+  border: none;
+}
+
+.dark-mode .tabla th,
+.dark-mode .tabla td {
+  border: 1px solid #555; /* Bordes más oscuros */
+  color: #bbb; /* Texto gris claro */
+}
+
+.dark-mode .tabla th {
+  background-color: #444; /* Fondo más oscuro para los encabezados */
+}
+
+.dark-mode .error {
+  color: #f44336; /* Rojo para el texto de error */
+}
