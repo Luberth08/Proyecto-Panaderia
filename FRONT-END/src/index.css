@@ -1,0 +1,107 @@
+/* src/index.css */
+:root {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+
+  /* Paleta de colores para panadería */
+  --primary-brown: #8B4513;      /* Café oscuro principal */
+  --secondary-brown: #A0522D;    /* Café medio */
+  --light-brown: #D2B48C;        /* Café claro */
+  --accent-red: #B22222;         /* Rojo oscuro acento */
+  --light-red: #CD5C5C;          /* Rojo claro */
+  --cream: #FFF8E1;              /* Crema claro */
+  --dark-cream: #F5E6D3;         /* Crema oscuro */
+  --text-dark: #5D4037;          /* Texto oscuro */
+  --text-light: #8D6E63;         /* Texto claro */
+  --white: #FFFFFF;
+  --shadow: rgba(139, 69, 19, 0.15);
+
+  color: var(--text-dark);
+  background-color: var(--cream);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--cream);
+  color: var(--text-dark);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Tipografía responsive */
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  color: var(--primary-brown);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.3;
+  color: var(--primary-brown);
+}
+
+h3 {
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--secondary-brown);
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary-brown);
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--secondary-brown);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 3px solid var(--light-brown);
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--light-brown);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-brown);
+}

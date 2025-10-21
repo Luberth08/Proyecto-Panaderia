@@ -30,6 +30,8 @@ app.use("/api/usuario", require("./routers/usuario/usuario.routers"));
 app.use("/api/permiso", require("./routers/usuario/permiso.routers"));
 app.use("/api/rol", require("./routers/usuario/rol.routers"));
 app.use("/api/rol_permiso", require("./routers/usuario/rol_permiso.routers"));
+app.use("/api/perfil", require("./routers/usuario/perfil.routers"));
+app.use("/api/cambiar_contrasena", require("./routers/usuario/cambiar_contrasena.routers"));
 
 // Rutas protegidas de Inventario
 app.use("/api/categoria", require("./routers/inventario/categoria.routers"));

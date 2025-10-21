@@ -1,0 +1,172 @@
+/* src/pages/perfil/Perfil.css */
+.perfil-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.perfil-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.perfil-header h1 {
+  color: var(--primary-brown);
+  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+}
+
+.perfil-header p {
+  color: var(--text-light);
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.perfil-card {
+  background: linear-gradient(135deg, var(--white) 0%, var(--dark-cream) 100%);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px var(--shadow);
+  border: 1px solid var(--light-brown);
+}
+
+.perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.75rem;
+  color: var(--primary-brown);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.form-group input,
+.form-group select {
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--light-brown);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: var(--white);
+  transition: all 0.3s ease;
+  color: var(--text-dark);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(178, 34, 34, 0.1);
+  transform: translateY(-2px);
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+  background: var(--dark-cream);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-actions {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-brown) 0%, var(--accent-red) 100%);
+  color: var(--white);
+  border: none;
+  padding: 1.25rem 3rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--accent-red) 0%, var(--primary-brown) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(139, 69, 19, 0.4);
+}
+
+.btn-primary:disabled {
+  background: var(--text-light);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.error-message {
+  background: linear-gradient(135deg, var(--accent-red) 0%, var(--light-red) 100%);
+  color: var(--white);
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(178, 34, 34, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.success-message {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: var(--white);
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-light);
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .perfil-container {
+    padding: 1rem;
+  }
+  
+  .perfil-card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .perfil-header h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .perfil-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .btn-primary {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+}

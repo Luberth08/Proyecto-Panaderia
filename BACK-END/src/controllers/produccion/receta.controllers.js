@@ -1,6 +1,28 @@
 const pool = require("../../db.js");
 const { logEvent } = require("../../middleware/bitacora.middleware.js");
 
+// Helper: convierte un entero (minutos) o string numérico a TIME 'HH:MM:SS'
+// Asumimos que el valor recibido representa minutos. Si prefieres segundos, se puede ajustar.
+const toSqlTimeFromMinutes = (value) => {
+  if (value === null || value === undefined || value === "") return null;
+
+  // Aceptar números o strings numéricos
+  const n = Number(value);
+  if (Number.isNaN(n) || n < 0) return null;
+
+  const totalSeconds = Math.floor(n * 60); // minutos -> segundos
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  // Formatear con ceros a la izquierda
+  const hh = String(hours).padStart(2, "0");
+  const mm = String(minutes).padStart(2, "0");
+  const ss = String(seconds).padStart(2, "0");
+
+  return `${hh}:${mm}:${ss}`;
+};
+
 // ----------------------------
 // Crear una nueva receta
 // ----------------------------
@@ -13,10 +35,16 @@ const createReceta = async (req, res) => {
       return res.status(400).json({ message: "El producto asociado no existe." });
     }
 
+    // Convertir 'tiempo' (minutos) a formato TIME para Postgres
+    const tiempoSql = toSqlTimeFromMinutes(tiempo);
+    if (tiempoSql === null) {
+      return res.status(400).json({ message: "Tiempo inválido. Proporcione un número de minutos >= 0." });
+    }
+
     await pool.query(
       `INSERT INTO receta (unidades, tiempo, id_producto)
        VALUES ($1, $2, $3)`,
-      [unidades, tiempo, id_producto]
+      [unidades, tiempoSql, id_producto]
     );
 
     await logEvent(
@@ -104,11 +132,17 @@ const updateReceta = async (req, res) => {
       return res.status(400).json({ message: "El producto ya esta asociado a una receta." });
     }
 
+    // Convertir 'tiempo' a formato TIME antes de actualizar
+    const tiempoSql = toSqlTimeFromMinutes(tiempo);
+    if (tiempoSql === null) {
+      return res.status(400).json({ message: "Tiempo inválido. Proporcione un número de minutos >= 0." });
+    }
+
     await pool.query(
       `UPDATE receta
        SET unidades = $1, tiempo = $2, id_producto = $3
        WHERE id = $4`,
-      [unidades, tiempo, id_producto, id]
+      [unidades, tiempoSql, id_producto, id]
     );
 
     await logEvent(
