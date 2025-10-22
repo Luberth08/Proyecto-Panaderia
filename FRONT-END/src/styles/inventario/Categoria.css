@@ -1,0 +1,48 @@
+/* src/styles/Categoria.css */
+.categoria-nombre {
+  background: var(--light-brown);
+  color: var(--primary-brown);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.categoria-descripcion {
+  color: var(--text-light);
+  font-style: italic;
+  max-width: 300px;
+  display: block;
+  line-height: 1.4;
+}
+
+/* Estilos específicos para el formulario de categoría */
+.categoria-form .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.categoria-form textarea {
+  min-height: 100px;
+  resize: vertical;
+  padding: var(--spacing-md);
+  border: 2px solid var(--light-brown);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  background: var(--white);
+  transition: all 0.3s ease;
+  color: var(--text-dark);
+  font-family: inherit;
+  width: 100%;
+}
+
+.categoria-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(178, 34, 34, 0.1);
+}
+
+@media (max-width: 768px) {
+  .categoria-descripcion {
+    max-width: 100%;
+  }
+}

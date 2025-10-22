@@ -1,0 +1,46 @@
+/* src/styles/Producto.css */
+.producto-nombre {
+  background: var(--light-brown);
+  color: var(--primary-brown);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.producto-precio {
+  background: var(--success-color);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.producto-categoria {
+  background: var(--secondary-brown);
+  color: var(--cream);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Estilos específicos para el formulario de producto */
+.producto-form .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.producto-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  .producto-form .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}

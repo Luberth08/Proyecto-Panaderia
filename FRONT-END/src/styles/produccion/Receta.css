@@ -1,0 +1,46 @@
+/* src/styles/Receta.css */
+.receta-producto {
+  background: var(--light-brown);
+  color: var(--primary-brown);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.receta-unidades {
+  background: var(--secondary-brown);
+  color: var(--cream);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.receta-tiempo {
+  background: var(--success-color);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Estilos específicos para el formulario de receta */
+.receta-form .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.receta-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  .receta-form .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}

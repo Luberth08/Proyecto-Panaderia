@@ -1,20 +1,23 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react"; // ← AGREGAR useState y useEffect
-import Layout from "./components/Layout";
-import Login from "./pages/auth/Login";
-import Dashboard from "./pages/Dashboards/Dashboard";
-import Rol from './pages/rol/Rol'; // Agregar esta importación
-import Usuario from "./pages/usuario/Usuario"; // ← IMPORTAR el componente real
-import Perfil from './pages/perfil/Perfil';
-import CambiarContrasena from './pages/perfil/CambiarContrasena';
-import Permiso from './pages/permiso/Permiso';
+import { useState, useEffect } from "react"; 
+import "./styles/globals.css";
+
+// Importar componentes y páginas
+import Layout from "./components/layout/Layout";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Login from "./pages/usuario/Login";
+import Rol from './pages/usuario/Rol'; 
+import Usuario from "./pages/usuario/Usuario"; 
+import Perfil from './pages/usuario/Perfil';
+import CambiarContrasena from './pages/usuario/CambiarContrasena';
+import Permiso from './pages/usuario/Permiso';
+import Receta from './pages/produccion/Receta';
 import Categoria from './pages/inventario/Categoria';
 import Insumo from './pages/inventario/Insumo';
 import Producto from './pages/inventario/Producto';
-import Receta from './pages/produccion/Receta';
 import Proveedor from './pages/compra/Proveedor';
-import "./App.css";
+import Bitacora from "./pages/bitacora/Bitacora";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -49,18 +52,27 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
+
+            {/* Rutas de Usuario */}
             <Route path="usuarios" element={<Usuario/>} />
             <Route path="roles" element={<Rol />} />
             <Route path="perfil" element={<Perfil />} />
             <Route path="cambiar-contrasena" element={<CambiarContrasena />} />
-            <Route path="permisos" element={<Permiso />} /> {/* Reemplazar el div temporal */}
+            <Route path="permisos" element={<Permiso />} />
 
+            {/* Rutas de Inventario */}
             <Route path="categorias" element={<Categoria />} />
             <Route path="insumos" element={<Insumo />} />
             <Route path="productos" element={<Producto />} />
 
+            {/* Rutas de Producción */}
             <Route path="recetas" element={<Receta />} />
+
+            {/* Rutas de Compras */}
             <Route path="proveedores" element={<Proveedor />} />
+
+            {/* Rutas de Auditoria*/}
+            <Route path="bitacora" element={<Bitacora />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/login" replace />} />

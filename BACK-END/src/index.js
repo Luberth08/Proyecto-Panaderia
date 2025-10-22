@@ -44,6 +44,9 @@ app.use("/api/receta", require("./routers/produccion/receta.routers"));
 // Rutas protegidas de Compra
 app.use("/api/proveedor", require("./routers/compra/proveedor.routers"));
 
+// Rutas protegidas de Bitácora
+app.use("/api/bitacora", require("./routers/bitacora.routers"));
+
 // Ruta de prueba para verificar que el servidor está activo
 app.get("/ping", (req, res) => {
   res.json({ message: "pong 🏓, servidor activo!" });

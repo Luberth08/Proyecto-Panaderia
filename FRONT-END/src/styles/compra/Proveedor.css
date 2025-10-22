@@ -1,0 +1,88 @@
+/* src/styles/Proveedor.css */
+.proveedor-codigo {
+  background: var(--light-brown);
+  color: var(--primary-brown);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.proveedor-sexo, .proveedor-telefono {
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.proveedor-empresa {
+  color: var(--black);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Estilos específicos para el formulario de proveedor */
+.proveedor-form .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.proveedor-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.checkbox-label input {
+  margin-right: var(--spacing-sm);
+  width: auto;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: var(--white);
+  border: 2px solid var(--light-brown);
+  border-radius: var(--border-radius-sm);
+  margin-right: var(--spacing-sm);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.checkbox-label input:checked + .checkmark {
+  background: var(--primary-brown);
+  border-color: var(--primary-brown);
+}
+
+.checkbox-label input:checked + .checkmark::after {
+  content: '✓';
+  color: var(--white);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .proveedor-form .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}

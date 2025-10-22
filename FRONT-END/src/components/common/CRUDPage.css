@@ -1,0 +1,63 @@
+/* src/styles/CRUDPage.css */
+.crud-page {
+  padding: var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.search-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.btn-editar, .btn-eliminar {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-editar {
+  background: var(--light-brown);
+  color: var(--primary-brown);
+}
+
+.btn-eliminar {
+  background: var(--light-red);
+  color: var(--white);
+}
+
+.btn-editar:hover {
+  background: var(--secondary-brown);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+
+.btn-eliminar:hover {
+  background: var(--accent-red);
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .crud-page {
+    padding: var(--spacing-md);
+  }
+  
+  .table-actions {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .btn-editar, .btn-eliminar {
+    width: 100%;
+    text-align: center;
+  }
+}

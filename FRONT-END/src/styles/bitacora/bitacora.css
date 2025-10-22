@@ -1,0 +1,109 @@
+/* src/styles/bitacora/Bitacora.css */
+
+/* Página bitácora */
+.bitacora-page h1 {
+  margin-bottom: 16px;
+  color: #222;
+}
+
+.bitacora-page p {
+  margin-bottom: 24px;
+  color: #555;
+}
+
+/* Lista de detalles */
+.detalle-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.detalle-item {
+  border-bottom: 1px solid #ddd;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.detalle-fecha {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.detalle-metodo {
+  font-style: italic;
+  margin-right: 8px;
+}
+
+.detalle-ruta {
+  color: #007bff;
+  margin-right: 8px;
+}
+
+.detalle-mensaje {
+  margin-top: 4px;
+  color: #333;
+}
+
+/* --- Modal --- */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-header h2 {
+  color: #333;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.modal-body {
+  color: #000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detalle-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detalle-fecha, .detalle-metodo, .detalle-ruta {
+    margin-bottom: 4px;
+  }
+}

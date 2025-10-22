@@ -283,3 +283,9 @@ export const proveedorAPI = {
     method: 'DELETE' 
   }),
 };
+
+export const bitacoraAPI = {
+  getAll: () => apiRequest('api/bitacora/read'),
+  getDetalle: (id) => apiRequest(`api/bitacora/detalle/${id}`),
+  getAllDetalles: () => apiRequest('api/bitacora/detalles')
+};

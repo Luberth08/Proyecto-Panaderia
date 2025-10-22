@@ -1,0 +1,51 @@
+/* src/styles/PageHeader.css */
+.page-header {
+  background: linear-gradient(135deg, var(--white) 0%, var(--dark-cream) 100%);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-medium);
+  border: 1px solid var(--light-brown);
+  margin-bottom: var(--spacing-xl);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+}
+
+.header-text h1 {
+  color: var(--primary-brown);
+  margin-bottom: var(--spacing-sm);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.header-text p {
+  color: var(--text-light);
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.header-action {
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-md);
+  }
+  
+  .header-text h1 {
+    font-size: 1.6rem;
+  }
+  
+  .page-header {
+    padding: var(--spacing-lg);
+  }
+}

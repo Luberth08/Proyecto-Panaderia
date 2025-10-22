@@ -1,0 +1,23 @@
+/* src/styles/Permiso.css */
+.permiso-nombre {
+  background: var(--light-brown);
+  color: var(--primary-brown);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Estilos específicos para el formulario de permiso */
+.permiso-form .format-hint {
+  display: block;
+  margin-top: var(--spacing-xs);
+  color: var(--text-light);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.permiso-form .form-group {
+  margin-bottom: var(--spacing-md);
+}

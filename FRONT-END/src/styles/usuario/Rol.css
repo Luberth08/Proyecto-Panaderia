@@ -1,0 +1,115 @@
+/* src/styles/Rol.css */
+.rol-page {
+  padding: var(--spacing-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.btn-asignar {
+  background: var(--secondary-brown);
+  color: var(--white);
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.btn-asignar:hover {
+  background: var(--primary-brown);
+  transform: translateY(-1px);
+}
+
+.permisos-modal-content {
+  padding: var(--spacing-md);
+}
+
+.permisos-list h3 {
+  color: var(--primary-brown);
+  margin-bottom: var(--spacing-lg);
+  font-size: 1.2rem;
+}
+
+.permisos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+  max-height: 400px;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  background: var(--cream);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--light-brown);
+}
+
+.permiso-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--white);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--light-brown);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.permiso-item:hover {
+  background: var(--dark-cream);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+}
+
+.permiso-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.permiso-nombre {
+  color: var(--text-dark);
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.selected-count {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, var(--primary-brown) 0%, var(--secondary-brown) 100%);
+  color: var(--cream);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+}
+
+/* Estilos específicos para el formulario de rol */
+.rol-form .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  .rol-page {
+    padding: var(--spacing-md);
+  }
+  
+  .permisos-grid {
+    grid-template-columns: 1fr;
+    max-height: 300px;
+  }
+  
+  .permiso-item {
+    padding: var(--spacing-md);
+  }
+  
+  .table-actions {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .btn-editar, .btn-asignar, .btn-eliminar {
+    width: 100%;
+    text-align: center;
+  }
+}

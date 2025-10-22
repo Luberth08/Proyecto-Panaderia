@@ -1,0 +1,36 @@
+/* src/styles/Usuario.css */
+.usuario-sexo, .usuario-telefono {
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.rol-badge {
+  background: var(--light-brown);
+  color: var(--primary-brown);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Estilos específicos para el formulario de usuario */
+.usuario-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.usuario-form .form-group small {
+  display: block;
+  margin-top: var(--spacing-xs);
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .usuario-form .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}

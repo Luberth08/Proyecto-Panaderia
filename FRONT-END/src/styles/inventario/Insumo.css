@@ -1,0 +1,37 @@
+/* src/styles/Insumo.css */
+.insumo-nombre {
+  background: var(--light-brown);
+  color: var(--primary-brown);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.insumo-medida {
+  background: var(--secondary-brown);
+  color: var(--cream);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Estilos específicos para el formulario de insumo */
+.insumo-form .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.insumo-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  .insumo-form .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}

@@ -150,7 +150,24 @@ INSERT INTO PERMISO (NOMBRE) VALUES
 ('CREAR_CATEGORIA'),
 ('VER_CATEGORIA'),
 ('MODIFICAR_CATEGORIA'),
-('ELIMINAR_CATEGORIA');
+('ELIMINAR_CATEGORIA'),
+('CREAR_PRODUCTO'),
+('VER_PRODUCTO'),
+('MODIFICAR_PRODUCTO'),
+('ELIMINAR_PRODUCTO'),
+('CREAR_INSUMO'),
+('VER_INSUMO'),
+('MODIFICAR_INSUMO'),
+('ELIMINAR_INSUMO'),
+('CREAR_PROVEEDOR'),
+('VER_PROVEEDOR'),
+('MODIFICAR_PROVEEDOR'),
+('ELIMINAR_PROVEEDOR'),
+('CREAR_RECETA'),
+('VER_RECETA'),
+('MODIFICAR_RECETA'),
+('ELIMINAR_RECETA'),
+('VER_BITACORA');
 
 INSERT INTO ROL_PERMISO (ID_ROL, ID_PERMISO) VALUES
 -- ADMINISTRADOR: puede hacer todo
@@ -172,17 +189,44 @@ INSERT INTO ROL_PERMISO (ID_ROL, ID_PERMISO) VALUES
 -- Gestionar Rol_permisos
 (1, 13), 
 (1, 14), 
-(1, 15);
+(1, 15),
 -- Gestionar Categorias
--- CLIENTE: solo ver pedidos y generar solicitudes (si aplica)
+(1, 16),
+(1, 17),
+(1, 18),
+(1, 19),
+-- Gestionar Producto
+(1, 20),
+(1, 21),
+(1, 22),
+(1, 23),
+-- Gestionar Insumo
+(1, 24),
+(1, 25),
+(1, 26),
+(1, 27),
+-- Gestionar Proveedor
+(1, 28),
+(1, 29),
+(1, 30),
+(1, 31),
+-- Gestionar Receta
+(1, 32),
+(1, 33),
+(1, 34),
+(1, 35),
+-- Gestionar Auditoria
+(1, 36);
 
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 INSERT INTO USUARIO (NOMBRE, SEXO, EMAIL, CONTRASENA, TELEFONO, ID_ROL) VALUES
-('Luberth', 'M', 'luberthgutierrez@gmail.com', '$2b$10$xntLD/h19xNfNES3JN0MOeym.bwYGL4jO9rdhGJnKtTW9cL02NEgu', '69275363', 1),
-('Sergio', 'M', 'sergio@gmail.com', '$2b$10$cXk52UUG15v1TwfPvbhlLu4b07rCOI8B62HgBjzjY0FNfZL9m0Xv6', '65894253', 1),
-('Alejandro', 'M', 'alejandro@gmail.com', '$2b$10$PftFjV30LZYWTK/xMxYP1.S70GQbTt5S1c5Ihi4/DQ71hhL0GUYcu', '71152938', 1),
-('Melissa', 'F', 'melissa@gmail.com', '$2b$10$qrthn.2hM.W0dIFWt5HAEeBTl/7NRT6Hy8/ZecqKkOSclnAjxigfu', '68752493', 1),
-('Jhoel', 'M', 'jhoel@gmail.com', '$2b$10$1RGHwsoHB4HSAvXEcDSSm.7K4B8nvI3Xf2lSP5p./dXXLcJEwiXlG', '62129358', 2),
-('Rodrigo', 'M', 'rodrigo@gmail.com', '$2b$10$/4ByApIivPNW7ncfTIiZT.cc1sinu3yf/Nkl9eTuouDkLq1PugLKC', '76351664', 3);
+('Luberth', 'M', 'luberthgutierrez@gmail.com', crypt('106347', gen_salt('bf', 10)), '69275363', 1),
+('Sergio', 'M', 'sergio@gmail.com', crypt('sergio123', gen_salt('bf', 10)), '65894253', 1),
+('Alejandro', 'M', 'alejandro@gmail.com', crypt('alejandro123', gen_salt('bf', 10)), '71152938', 1),
+('Melissa', 'F', 'melissa@gmail.com', crypt('melissa123', gen_salt('bf', 10)), '68752493', 1),
+('Jhoel', 'M', 'jhoel@gmail.com', crypt('jhoel123', gen_salt('bf', 10)), '62129358', 2),
+('Rodrigo', 'M', 'rodrigo@gmail.com', crypt('rodrigo123', gen_salt('bf', 10)), '76351664', 3);
 
 INSERT INTO PROVEEDOR (CODIGO, NOMBRE, SEXO, TELEFONO, ESTADO) VALUES
 ('PRV001', 'Juan Pérez', 'M', '71236517', 'ACTIVO'),
@@ -243,10 +287,15 @@ INSERT INTO DETALLE_FACTURA (ID_FACTURA_INTERNA, ID_PRODUCTO, CANTIDAD, PRECIO, 
 (3, 3, 2, 35.00, 70.00),   -- Pan de avena con chispas de chocolate
 (3, 7, 1, 35.00, 35.00);   -- Pan de avena con almendras y uvas pasas
 
-select * from bitacora
-select * from detalle_bitacora
-select * from usuario
-select * from rol
-select * from permiso
-select * from rol_permiso
-select * from categoria
+select * from bitacora;
+select * from detalle_bitacora;
+select * from usuario;
+select * from rol;
+select * from permiso;
+select * from rol_permiso;
+select * from categoria;
+
+select * from producto;
+select * from insumo;
+select * from receta;
+select * from proveedor;

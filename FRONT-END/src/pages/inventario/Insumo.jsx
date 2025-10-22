@@ -1,350 +1,148 @@
 // src/pages/inventario/Insumo.jsx
-import { useState, useEffect } from 'react';
 import { insumoAPI } from '../../api/api';
-import './Insumo.css';
+import CRUDPage from '../../components/common/CRUDPage';
+import FormInput from '../../components/ui/Form/FormInput';
+import FormSelect from '../../components/ui/Form/FormSelect';
+import FormRow from '../../components/ui/Form/FormRow';
+import StatusBadge from '../../components/common/StatusBadge';
+import { UNIDADES_MEDIDA } from '../../utils/constants';
+import { useForm } from '../../hooks/useForm'; // ✅ CORREGIDO: con llaves
+import { isStockBajo } from '../../utils/helpers';
 
-export default function Insumo() {
-  const [insumos, setInsumos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [editingInsumo, setEditingInsumo] = useState(null);
-  const [insumoToDelete, setInsumoToDelete] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  // Estado para el formulario
-  const [form, setForm] = useState({
-    nombre: '',
-    medida: '',
-    stock: '',
-    stock_minimo: ''
+// Componente de formulario para Insumo
+const InsumoForm = ({ initialData, onSubmit, onCancel, isEditing }) => {
+  const { form, handleChange, validateForm } = useForm(initialData, {
+    nombre: { required: true },
+    medida: { required: true },
+    stock: { required: true },
+    stock_minimo: { required: true }
   });
 
-  // Opciones de unidad de medida
-  const medidas = ['kg', 'gr', 'lt', 'ml', 'unid'];
-
-  useEffect(() => {
-    cargarInsumos();
-  }, []);
-
-  const cargarInsumos = async () => {
-    try {
-      setLoading(true);
-      const data = await insumoAPI.getAll();
-      setInsumos(data);
-    } catch (err) {
-      setError('Error al cargar los insumos: ' + err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const resetForm = () => {
-    setForm({
-      nombre: '',
-      medida: '',
-      stock: '',
-      stock_minimo: ''
-    });
-    setEditingInsumo(null);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const insumoData = {
+    if (validateForm()) {
+      // Convertir a números
+      const formattedData = {
         ...form,
         stock: parseInt(form.stock),
         stock_minimo: parseInt(form.stock_minimo)
       };
-
-      if (editingInsumo) {
-        // Actualizar insumo
-        await insumoAPI.update(editingInsumo.id, insumoData);
-      } else {
-        // Crear insumo
-        await insumoAPI.create(insumoData);
-      }
-      await cargarInsumos();
-      setShowModal(false);
-      resetForm();
-    } catch (err) {
-      setError(err.message);
+      onSubmit(formattedData);
     }
   };
-
-  const handleEdit = (insumo) => {
-    setEditingInsumo(insumo);
-    setForm({
-      nombre: insumo.nombre,
-      medida: insumo.medida,
-      stock: insumo.stock.toString(),
-      stock_minimo: insumo.stock_minimo.toString()
-    });
-    setShowModal(true);
-  };
-
-  const handleDeleteClick = (insumo) => {
-    setInsumoToDelete(insumo);
-    setShowDeleteModal(true);
-  };
-
-  const handleDeleteConfirm = async () => {
-    if (insumoToDelete) {
-      try {
-        await insumoAPI.delete(insumoToDelete.id);
-        await cargarInsumos();
-        setShowDeleteModal(false);
-        setInsumoToDelete(null);
-      } catch (err) {
-        setError(err.message);
-      }
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setShowDeleteModal(false);
-    setInsumoToDelete(null);
-  };
-
-  // Función para verificar si el stock está bajo
-  const isStockBajo = (stock, stockMinimo) => {
-    return stock < stockMinimo;
-  };
-
-  // Filtrar insumos basado en la búsqueda
-  const filteredInsumos = insumos.filter(insumo =>
-    insumo.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  if (loading) return <div className="loading">Cargando insumos...</div>;
 
   return (
-    <div className="insumo-container">
-      {/* Header con título y botón */}
-      <div className="insumo-header">
-        <div className="header-left">
-          <h1>Gestión de Insumos</h1>
-          <p>Administra los insumos del inventario</p>
-        </div>
-        <button 
-          className="btn-primary"
-          onClick={() => setShowModal(true)}
-        >
-          + Nuevo Insumo
+    <form onSubmit={handleSubmit} className="modal-form">
+      <FormInput
+        label="Nombre del insumo"
+        name="nombre"
+        value={form.nombre}
+        onChange={handleChange}
+        placeholder="Ej: Harina, Azúcar, Sal"
+        required
+      />
+
+      <FormSelect
+        label="Unidad de Medida"
+        name="medida"
+        value={form.medida}
+        onChange={handleChange}
+        options={UNIDADES_MEDIDA.map(medida => ({ value: medida, label: medida }))}
+        placeholder="Seleccionar medida"
+        required
+      />
+
+      <FormRow>
+        <FormInput
+          label="Stock Actual"
+          name="stock"
+          value={form.stock}
+          onChange={handleChange}
+          type="number"
+          min="0"
+          required
+        />
+
+        <FormInput
+          label="Stock Mínimo"
+          name="stock_minimo"
+          value={form.stock_minimo}
+          onChange={handleChange}
+          type="number"
+          min="0"
+          required
+        />
+      </FormRow>
+
+      <div className="modal-actions">
+        <button type="button" className="btn-secondary" onClick={onCancel}>
+          Cancelar
+        </button>
+        <button type="submit" className="btn-primary">
+          {isEditing ? 'Actualizar' : 'Crear'} Insumo
         </button>
       </div>
+    </form>
+  );
+};
 
-      {/* Barra de búsqueda */}
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Buscar por nombre..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
-      </div>
+// Configuración de columnas
+const insumoColumns = [
+  {
+    key: 'id',
+    title: 'ID',
+    width: '80px'
+  },
+  {
+    key: 'nombre',
+    title: 'Nombre',
+    render: (insumo) => (
+      <span className="insumo-nombre">{insumo.nombre}</span>
+    )
+  },
+  {
+    key: 'medida',
+    title: 'Medida',
+    render: (insumo) => (
+      <span className="insumo-medida">{insumo.medida}</span>
+    )
+  },
+  {
+    key: 'stock',
+    title: 'Stock',
+    render: (insumo) => (
+      <StatusBadge 
+        status={isStockBajo(insumo.stock, insumo.stock_minimo) ? 'bajo' : 'normal'}
+        text={insumo.stock.toString()}
+      />
+    )
+  },
+  {
+    key: 'stock_minimo',
+    title: 'Stock Mínimo',
+    render: (insumo) => insumo.stock_minimo
+  }
+];
 
-      {/* Tabla de insumos */}
-      <div className="table-container">
-        <table className="insumo-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Medida</th>
-              <th>Stock</th>
-              <th>Stock Mínimo</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredInsumos.map(insumo => (
-              <tr key={insumo.id}>
-                <td>{insumo.id}</td>
-                <td>
-                  <span className="insumo-nombre">
-                    {insumo.nombre}
-                  </span>
-                </td>
-                <td>
-                  <span className="insumo-medida">
-                    {insumo.medida}
-                  </span>
-                </td>
-                <td>
-                  <span className={`insumo-stock ${isStockBajo(insumo.stock, insumo.stock_minimo) ? 'stock-bajo' : ''}`}>
-                    {insumo.stock}
-                  </span>
-                </td>
-                <td>
-                  <span className="insumo-stock-minimo">
-                    {insumo.stock_minimo}
-                  </span>
-                </td>
-                <td className="acciones">
-                  <button 
-                    className="btn-editar"
-                    onClick={() => handleEdit(insumo)}
-                  >
-                    ✏️ Editar
-                  </button>
-                  <button 
-                    className="btn-eliminar"
-                    onClick={() => handleDeleteClick(insumo)}
-                  >
-                    🗑️ Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        
-        {filteredInsumos.length === 0 && (
-          <div className="no-data">
-            {searchTerm ? 'No se encontraron insumos con ese criterio' : 'No hay insumos registrados'}
-          </div>
-        )}
-      </div>
+// Estado inicial
+const initialFormState = {
+  nombre: '',
+  medida: '',
+  stock: '',
+  stock_minimo: ''
+};
 
-      {/* Modal para crear/editar */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <div className="modal-header">
-              <h2>{editingInsumo ? 'Editar Insumo' : 'Nuevo Insumo'}</h2>
-              <button 
-                className="close-btn"
-                onClick={() => {
-                  setShowModal(false);
-                  resetForm();
-                }}
-              >
-                ×
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="modal-form">
-              {error && <div className="error-message">{error}</div>}
-
-              <div className="form-group">
-                <label>Nombre del insumo *</label>
-                <input
-                  type="text"
-                  name="nombre"
-                  value={form.nombre}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Ej: Harina, Azúcar, Sal"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Unidad de Medida *</label>
-                <select
-                  name="medida"
-                  value={form.medida}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Seleccionar medida</option>
-                  {medidas.map(medida => (
-                    <option key={medida} value={medida}>
-                      {medida}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Stock Actual *</label>
-                  <input
-                    type="number"
-                    name="stock"
-                    value={form.stock}
-                    onChange={handleInputChange}
-                    required
-                    min="0"
-                    placeholder="0"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Stock Mínimo *</label>
-                  <input
-                    type="number"
-                    name="stock_minimo"
-                    value={form.stock_minimo}
-                    onChange={handleInputChange}
-                    required
-                    min="0"
-                    placeholder="0"
-                  />
-                </div>
-              </div>
-
-              <div className="modal-actions">
-                <button type="button" className="btn-secondary" onClick={() => {
-                  setShowModal(false);
-                  resetForm();
-                }}>
-                  Cancelar
-                </button>
-                <button type="submit" className="btn-primary">
-                  {editingInsumo ? 'Actualizar' : 'Crear'} Insumo
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Modal de confirmación para eliminar */}
-      {showDeleteModal && insumoToDelete && (
-        <div className="modal-overlay">
-          <div className="modal confirm-modal">
-            <div className="modal-header">
-              <h2>Confirmar Eliminación</h2>
-            </div>
-            <div className="modal-body">
-              <p>
-                ¿Estás seguro de que deseas eliminar el insumo <strong>"{insumoToDelete.nombre}"</strong>?
-              </p>
-              <p className="warning-text">
-                ⚠️ Esta acción no se puede deshacer.
-              </p>
-            </div>
-            <div className="modal-actions">
-              <button 
-                type="button" 
-                className="btn-secondary" 
-                onClick={handleDeleteCancel}
-              >
-                Cancelar
-              </button>
-              <button 
-                type="button" 
-                className="btn-danger" 
-                onClick={handleDeleteConfirm}
-              >
-                Sí, Eliminar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+// Componente principal
+export default function Insumo() {
+  return (
+    <CRUDPage
+      title="Insumos"
+      description="Administra los insumos del inventario"
+      api={insumoAPI}
+      columns={insumoColumns}
+      FormComponent={InsumoForm}
+      initialFormState={initialFormState}
+      searchFields={['nombre']}
+    />
   );
 }

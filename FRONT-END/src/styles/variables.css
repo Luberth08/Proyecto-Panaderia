@@ -1,0 +1,57 @@
+/* src/styles/variables.css */
+:root {
+  /* ===== COLOR PALETTE ===== */
+  /* Primary Colors */
+  --primary-brown: #8B4513;
+  --secondary-brown: #A0522D;
+  --light-brown: #D2B48C;
+  
+  /* Accent Colors */
+  --accent-red: #B22222;
+  --light-red: #FF6B6B;
+  
+  /* Neutral Colors */
+  --cream: #FFF8E1;
+  --dark-cream: #F5E6D3;
+  --white: #FFFFFF;
+  --black: #000000;
+  
+  /* Text Colors */
+  --text-dark: #333333;
+  --text-light: #666666;
+  
+  /* Status Colors */
+  --success-color: #27ae60;
+  --warning-color: #f39c12;
+  --error-color: #e74c3c;
+  
+  /* ===== SPACING ===== */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+  
+  /* ===== BORDER RADIUS ===== */
+  --border-radius-sm: 8px;
+  --border-radius: 12px;
+  --border-radius-lg: 20px;
+  
+  /* ===== SHADOWS ===== */
+  --shadow: rgba(139, 69, 19, 0.2);
+  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.3);
+  
+  /* ===== BREAKPOINTS ===== */
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1200px;
+  
+  /* ===== Z-INDEX ===== */
+  --z-dropdown: 1000;
+  --z-modal: 1000;
+  --z-tooltip: 1070;
+}
