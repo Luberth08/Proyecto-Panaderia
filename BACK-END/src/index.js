@@ -16,19 +16,27 @@ const app = express();
 const PORT = process.env.PORT;
 
 // Autorizacion al frontend del puerto 3000
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173", 
-      "http://frontend:5173",  // Añadir para comunicación entre contenedores
-      "http://localhost:3000",
-      "https://proyecto-panaderia-front-f03w9yb1b-luberths-projects.vercel.app"
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://frontend:5173",
+  "http://localhost:3000",
+  "https://proyecto-panaderia-front-f03w9yb1b-luberths-projects.vercel.app"
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
+}));
+
+// Responder correctamente a preflight requests
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
+}));
 
 app.use(express.json());
 app.use(getClientIp);
