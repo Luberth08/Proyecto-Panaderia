@@ -2,7 +2,7 @@
 import { useState} from "react";
 import { bitacoraAPI } from "../../api/api";
 import CRUDPage from "../../components/common/CRUDPage";
-import "../../styles/bitacora/Bitacora.css";
+import "../../styles/bitacora/bitacora.css";
 
 // Componente para mostrar detalles dentro del modal
 const DetalleList = ({ detalles }) => {
