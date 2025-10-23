@@ -22,7 +22,7 @@ app.use(
       "http://localhost:5173", 
       "http://frontend:5173",  // Añadir para comunicación entre contenedores
       "http://localhost:3000",
-      "https://proyecto-panaderia-front-end.vercel.app/"
+      "https://proyecto-panaderia-front-f03w9yb1b-luberths-projects.vercel.app"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
