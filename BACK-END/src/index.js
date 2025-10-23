@@ -1,3 +1,9 @@
+// if(process.env.NODE_ENV !== "production") {
+//   require("dotenv").config({ path: "./.env.production" });
+// } else {
+//   require("dotenv").config({ path: "./.env.local" });
+// }
+
 require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const cors = require("cors");
@@ -12,8 +18,14 @@ const PORT = process.env.PORT;
 // Autorizacion al frontend del puerto 3000
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173", 
+      "http://frontend:5173",  // Añadir para comunicación entre contenedores
+      "http://localhost:3000"
+    ],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
 

@@ -166,8 +166,7 @@ INSERT INTO PERMISO (NOMBRE) VALUES
 ('CREAR_RECETA'),
 ('VER_RECETA'),
 ('MODIFICAR_RECETA'),
-('ELIMINAR_RECETA'),
-('VER_BITACORA');
+('ELIMINAR_RECETA');
 
 INSERT INTO ROL_PERMISO (ID_ROL, ID_PERMISO) VALUES
 -- ADMINISTRADOR: puede hacer todo
@@ -214,19 +213,15 @@ INSERT INTO ROL_PERMISO (ID_ROL, ID_PERMISO) VALUES
 (1, 32),
 (1, 33),
 (1, 34),
-(1, 35),
--- Gestionar Auditoria
-(1, 36);
+(1, 35);
 
-
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
 INSERT INTO USUARIO (NOMBRE, SEXO, EMAIL, CONTRASENA, TELEFONO, ID_ROL) VALUES
-('Luberth', 'M', 'luberthgutierrez@gmail.com', crypt('106347', gen_salt('bf', 10)), '69275363', 1),
-('Sergio', 'M', 'sergio@gmail.com', crypt('sergio123', gen_salt('bf', 10)), '65894253', 1),
-('Alejandro', 'M', 'alejandro@gmail.com', crypt('alejandro123', gen_salt('bf', 10)), '71152938', 1),
-('Melissa', 'F', 'melissa@gmail.com', crypt('melissa123', gen_salt('bf', 10)), '68752493', 1),
-('Jhoel', 'M', 'jhoel@gmail.com', crypt('jhoel123', gen_salt('bf', 10)), '62129358', 2),
-('Rodrigo', 'M', 'rodrigo@gmail.com', crypt('rodrigo123', gen_salt('bf', 10)), '76351664', 3);
+('Luberth', 'M', 'luberthgutierrez@gmail.com', '$2b$10$xntLD/h19xNfNES3JN0MOeym.bwYGL4jO9rdhGJnKtTW9cL02NEgu', '69275363', 1),
+('Sergio', 'M', 'sergio@gmail.com', '$2b$10$cXk52UUG15v1TwfPvbhlLu4b07rCOI8B62HgBjzjY0FNfZL9m0Xv6', '65894253', 1),
+('Alejandro', 'M', 'alejandro@gmail.com', '$2b$10$PftFjV30LZYWTK/xMxYP1.S70GQbTt5S1c5Ihi4/DQ71hhL0GUYcu', '71152938', 1),
+('Melissa', 'F', 'melissa@gmail.com', '$2b$10$qrthn.2hM.W0dIFWt5HAEeBTl/7NRT6Hy8/ZecqKkOSclnAjxigfu', '68752493', 1),
+('Jhoel', 'M', 'jhoel@gmail.com', '$2b$10$1RGHwsoHB4HSAvXEcDSSm.7K4B8nvI3Xf2lSP5p./dXXLcJEwiXlG', '62129358', 2),
+('Rodrigo', 'M', 'rodrigo@gmail.com', '$2b$10$/4ByApIivPNW7ncfTIiZT.cc1sinu3yf/Nkl9eTuouDkLq1PugLKC', '76351664', 3);
 
 INSERT INTO PROVEEDOR (CODIGO, NOMBRE, SEXO, TELEFONO, ESTADO) VALUES
 ('PRV001', 'Juan Pérez', 'M', '71236517', 'ACTIVO'),
