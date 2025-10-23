@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: panaderia_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"  # Cambiado a puerto estándar para coincidir con tu .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - panaderia_red
+
+  backend:
+    build: ./BACK-END  # Cambiado a tu estructura de carpetas
+    container_name: panaderia_backend
+    env_file: ./BACK-END/.env  # Ruta correcta a tu .env
+    ports:
+      - "3001:3001"  # Puerto de tu backend Node.js
+    volumes:
+      - ./BACK-END:/app
+      - /app/node_modules  # Evitar conflictos con node_modules local
+    networks:
+      - panaderia_red
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    build: ./FRONT-END  # Cambiado a tu estructura de carpetas
+    container_name: panaderia_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./FRONT-END:/app
+      - /app/node_modules  # Evitar conflictos con node_modules local
+    environment:
+      - VITE_API_URL=http://backend:3001  # URL interna del contenedor
+      - HOST=0.0.0.0
+    networks:
+      - panaderia_red
+
+volumes:
+  pgdata:
+
+networks:
+  panaderia_red:
+    driver: bridge
