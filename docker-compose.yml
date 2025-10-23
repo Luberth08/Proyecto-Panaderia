@@ -25,7 +25,7 @@ services:
     build: ./BACK-END  # Cambiado a tu estructura de carpetas
     container_name: panaderia_backend
     env_file: ./BACK-END/.env  # Ruta correcta a tu .env
-    # command: /bin/sh -lc "./entrypoint.sh"
+    command: /bin/sh -lc /app/entrypoint.sh
     ports:
       - "3001:3001"  # Puerto de tu backend Node.js
     volumes:
