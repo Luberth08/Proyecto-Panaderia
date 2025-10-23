@@ -7,10 +7,13 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"  # Cambiado a puerto estándar para coincidir con tu .env
+      - "55432:5432"  # Cambiado a puerto estándar para coincidir con tu .env
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./1_db.sql:/docker-entrypoint-initdb.d/1_db.sql
+      - ./2_poblacion.sql:/docker-entrypoint-initdb.d/2_poblacion.sql
     healthcheck:
+
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} || exit 1"]
       interval: 5s
       timeout: 3s
@@ -22,6 +25,7 @@ services:
     build: ./BACK-END  # Cambiado a tu estructura de carpetas
     container_name: panaderia_backend
     env_file: ./BACK-END/.env  # Ruta correcta a tu .env
+    # command: /bin/sh -lc "./entrypoint.sh"
     ports:
       - "3001:3001"  # Puerto de tu backend Node.js
     volumes:
@@ -46,7 +50,6 @@ services:
       - ./FRONT-END:/app
       - /app/node_modules  # Evitar conflictos con node_modules local
     environment:
-      - VITE_API_URL=http://backend:3001  # URL interna del contenedor
       - HOST=0.0.0.0
     networks:
       - panaderia_red

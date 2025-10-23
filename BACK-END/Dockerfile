@@ -11,6 +11,9 @@ RUN npm ci --only=production
 # Copiar el resto del código
 COPY . .
 
+# Dar permisos de ejecución al entrypoint
+RUN chmod +x /app/entrypoint.sh
+
 EXPOSE 3001
 
-CMD ["npm", "start"]
+ENTRYPOINT ["/app/entrypoint.sh"]
