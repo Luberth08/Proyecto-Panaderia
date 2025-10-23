@@ -20,7 +20,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://frontend:5173",
   "http://localhost:3000",
-  "https://proyecto-panaderia-front-f03w9yb1b-luberths-projects.vercel.app"
+  "https://proyecto-panaderia-front-f03w9yb1b-luberths-projects.vercel.app",
+  "https://proyecto-panaderia-front-end.vercel.app/login"
 ];
 
 app.use(cors({
