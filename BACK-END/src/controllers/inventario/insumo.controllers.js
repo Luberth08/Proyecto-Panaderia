@@ -2,7 +2,7 @@ const pool = require("../../db.js");
 const { logEvent } = require("../../middleware/bitacora.middleware.js");
 
 // ----------------------------
-// Crear un nuevo insumo
+// Controlador para crear un nuevo insumo
 // ----------------------------
 const createInsumo = async (req, res) => {
   const { nombre, medida, stock, stock_minimo } = req.body;
@@ -35,7 +35,7 @@ const createInsumo = async (req, res) => {
 };
 
 // ----------------------------
-// Obtener todos los insumos
+// Controlador para obtener todos los insumos
 // ----------------------------
 const readInsumo = async (req, res) => {
   try {
@@ -53,7 +53,7 @@ const readInsumo = async (req, res) => {
 };
 
 // ----------------------------
-// Obtener insumo por ID
+// Controlador para obtener un insumo por su ID
 // ----------------------------
 const readInsumoById = async (req, res) => {
   const { id } = req.params;
@@ -79,7 +79,7 @@ const readInsumoById = async (req, res) => {
 };
 
 // ----------------------------
-// Actualizar un insumo
+// Controlador para actualizar un insumo
 // ----------------------------
 const updateInsumo = async (req, res) => {
   const { id } = req.params;
@@ -112,7 +112,7 @@ const updateInsumo = async (req, res) => {
 };
 
 // ----------------------------
-// Eliminar un insumo
+// Controlador para eliminar un insumo
 // ----------------------------
 const deleteInsumo = async (req, res) => {
   const { id } = req.params;

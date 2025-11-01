@@ -1,30 +1,9 @@
 const pool = require("../../db.js");
 const { logEvent } = require("../../middleware/bitacora.middleware.js");
-
-// Helper: convierte un entero (minutos) o string numérico a TIME 'HH:MM:SS'
-// Asumimos que el valor recibido representa minutos. Si prefieres segundos, se puede ajustar.
-const toSqlTimeFromMinutes = (value) => {
-  if (value === null || value === undefined || value === "") return null;
-
-  // Aceptar números o strings numéricos
-  const n = Number(value);
-  if (Number.isNaN(n) || n < 0) return null;
-
-  const totalSeconds = Math.floor(n * 60); // minutos -> segundos
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  // Formatear con ceros a la izquierda
-  const hh = String(hours).padStart(2, "0");
-  const mm = String(minutes).padStart(2, "0");
-  const ss = String(seconds).padStart(2, "0");
-
-  return `${hh}:${mm}:${ss}`;
-};
+const { toSqlTimeFromMinutes } = require("../../utils/timeUtils.js");
 
 // ----------------------------
-// Crear una nueva receta
+// Controlador para crear una nueva receta
 // ----------------------------
 const createReceta = async (req, res) => {
   const { unidades, tiempo, id_producto } = req.body;
@@ -62,7 +41,7 @@ const createReceta = async (req, res) => {
 };
 
 // ----------------------------
-// Obtener todas las recetas
+// Controlador para obtener todas las recetas
 // ----------------------------
 const readReceta = async (req, res) => {
   try {
@@ -83,7 +62,7 @@ const readReceta = async (req, res) => {
 };
 
 // ----------------------------
-// Obtener receta por ID
+// Controlador para obtener receta por ID
 // ----------------------------
 const readRecetaById = async (req, res) => {
   const { id } = req.params;
@@ -115,7 +94,7 @@ const readRecetaById = async (req, res) => {
 };
 
 // ----------------------------
-// Actualizar una receta
+// Controlador para actualizar una receta
 // ----------------------------
 const updateReceta = async (req, res) => {
   const { id } = req.params;
@@ -160,7 +139,7 @@ const updateReceta = async (req, res) => {
 };
 
 // ----------------------------
-// Eliminar una receta
+// Controlador para eliminar una receta
 // ----------------------------
 const deleteReceta = async (req, res) => {
   const { id } = req.params;

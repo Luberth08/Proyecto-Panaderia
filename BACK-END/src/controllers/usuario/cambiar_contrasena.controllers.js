@@ -2,12 +2,15 @@ const pool = require("../../db.js");
 const bcrypt = require("bcrypt");
 const { logEvent } = require("../../middleware/bitacora.middleware.js");
 
+// ----------------------------
+// Controlador para cambiar la contraseña
+// ----------------------------
 const cambiarContrasena = async (req, res) => {
   const { contrasena_actual, nueva_contrasena } = req.body;
   const { id_user, bitacoraId } = req.user; // Del token JWT
 
   try {
-    // 1. Validar que se envíen ambos campos
+    // Validar que se envíen ambos campos
     if (!contrasena_actual || !nueva_contrasena) {
       return res.status(400).json({
         success: false,
@@ -15,7 +18,7 @@ const cambiarContrasena = async (req, res) => {
       });
     }
 
-    // 2. Validar longitud de nueva contraseña
+    // Validar longitud de nueva contraseña
     if (nueva_contrasena.length < 6) {
       return res.status(400).json({
         success: false,
@@ -23,7 +26,7 @@ const cambiarContrasena = async (req, res) => {
       });
     }
 
-    // 3. Obtener usuario actual
+    // Obtener usuario actual
     const userResult = await pool.query(
       "SELECT * FROM usuario WHERE id = $1",
       [id_user]
@@ -38,7 +41,7 @@ const cambiarContrasena = async (req, res) => {
 
     const usuario = userResult.rows[0];
 
-    // 4. Verificar contraseña actual
+    // Verificar contraseña actual
     const isMatch = await bcrypt.compare(contrasena_actual, usuario.contrasena);
     if (!isMatch) {
       await logEvent(bitacoraId, "PUT", "/api/usuario/cambiar-contrasena", "Intento fallido: contraseña actual incorrecta");
@@ -49,17 +52,17 @@ const cambiarContrasena = async (req, res) => {
       });
     }
 
-    // 5. Encriptar nueva contraseña
+    // Encriptar nueva contraseña
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(nueva_contrasena, salt);
 
-    // 6. Actualizar contraseña en la base de datos
+    // Actualizar contraseña en la base de datos
     await pool.query(
       "UPDATE usuario SET contrasena = $1 WHERE id = $2",
       [hashedPassword, id_user]
     );
 
-    // 7. Registrar en bitácora
+    // Registrar en bitácora
     await logEvent(bitacoraId, "PUT", "/api/usuario/cambiar-contrasena", "Contraseña cambiada exitosamente");
 
     res.status(200).json({

@@ -2,7 +2,7 @@ const pool = require("../../db.js");
 const { logEvent } = require("../../middleware/bitacora.middleware.js");
 
 // ----------------------------
-// Crear un nuevo producto
+// Controlador para crear un nuevo producto
 // ----------------------------
 const createProducto = async (req, res) => {
   const { nombre, precio, stock, stock_minimo, id_categoria } = req.body;
@@ -34,7 +34,7 @@ const createProducto = async (req, res) => {
 };
 
 // ----------------------------
-// Obtener todos los productos (con nombre de categoría)
+// Controlador para obtener todos los productos (con nombre de categoría)
 // ----------------------------
 const readProducto = async (req, res) => {
   try {
@@ -56,7 +56,7 @@ const readProducto = async (req, res) => {
 };
 
 // ----------------------------
-// Obtener producto por ID
+// Controlador para obtener producto por ID
 // ----------------------------
 const readProductoById = async (req, res) => {
   const { id } = req.params;
@@ -89,7 +89,7 @@ const readProductoById = async (req, res) => {
 };
 
 // ----------------------------
-// Actualizar producto
+// Controlador para actualizar un producto
 // ----------------------------
 const updateProducto = async (req, res) => {
   const { id } = req.params;
@@ -123,7 +123,7 @@ const updateProducto = async (req, res) => {
 };
 
 // ----------------------------
-// Eliminar producto
+// Controlador para eliminar un producto
 // ----------------------------
 const deleteProducto = async (req, res) => {
   const { id } = req.params;

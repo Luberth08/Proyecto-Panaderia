@@ -2,7 +2,7 @@ const pool = require("../../db.js");
 const { logEvent } = require("../../middleware/bitacora.middleware.js");
 
 // ----------------------------
-// Crear un nuevo proveedor
+// Controlador para crear un nuevo proveedor
 // ----------------------------
 const createProveedor = async (req, res) => {
   const { codigo, nombre, sexo, telefono, estado, empresa } = req.body;
@@ -34,7 +34,7 @@ const createProveedor = async (req, res) => {
 };
 
 // ----------------------------
-// Obtener todos los proveedores
+// Controlador para obtener todos los proveedores
 // ----------------------------
 const readProveedor = async (req, res) => {
   try {
@@ -50,7 +50,7 @@ const readProveedor = async (req, res) => {
 };
 
 // ----------------------------
-// Obtener proveedor por código
+// Controlador para obtener proveedor por su código
 // ----------------------------
 const readProveedorById = async (req, res) => {
   const { codigo } = req.params;
@@ -76,7 +76,7 @@ const readProveedorById = async (req, res) => {
 };
 
 // ----------------------------
-// Actualizar un proveedor
+// Controlador para actualizar un proveedor
 // ----------------------------
 const updateProveedor = async (req, res) => {
   const { codigo } = req.params;
@@ -105,7 +105,7 @@ const updateProveedor = async (req, res) => {
 };
 
 // ----------------------------
-// Eliminar un proveedor
+// Controlador para eliminar un proveedor
 // ----------------------------
 const deleteProveedor = async (req, res) => {
   const { codigo } = req.params;

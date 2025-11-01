@@ -10,18 +10,18 @@ const router = express.Router();
 const verificarPermiso = require("../../middleware/verificar_permiso.middleware");
 
 // Ruta para agregar un permiso
-router.post("/create", verificarPermiso("CREAR_PERMISO"), createPermiso);
+router.post("/", verificarPermiso("CREAR_PERMISO"), createPermiso);
 
 // Ruta para obtener todos los permisos
-router.get("/read", verificarPermiso("VER_PERMISO"), readPermiso);
+router.get("/", verificarPermiso("VER_PERMISO"), readPermiso);
 
 // Ruta para obtener un permiso por ID
-router.get("/read/:id", verificarPermiso("VER_PERMISO"), readPermisoById);
+router.get("/:id", verificarPermiso("VER_PERMISO"), readPermisoById);
 
 // Ruta para modificar un permiso
-router.put("/update/:id", verificarPermiso("MODIFICAR_PERMISO"), updatePermiso);
+router.put("/:id", verificarPermiso("MODIFICAR_PERMISO"), updatePermiso);
 
 // Ruta para eliminar un permiso
-router.delete("/delete/:id", verificarPermiso("ELIMINAR_PERMISO"), deletePermiso);
+router.delete("/:id", verificarPermiso("ELIMINAR_PERMISO"), deletePermiso);
 
 module.exports = router;

@@ -1,7 +1,9 @@
-// controllers/usuario/perfil.controllers.js
 const pool = require("../../db.js");
 const { logEvent } = require("../../middleware/bitacora.middleware.js");
 
+// ----------------------------
+// Controlador para obtener los datos del usuario logueado
+// ----------------------------
 const getPerfil = async (req, res) => {
   const { id_user, bitacoraId } = req.user;
 
@@ -34,6 +36,9 @@ const getPerfil = async (req, res) => {
   }
 };
 
+// ----------------------------
+// Controlador para actualizar los datos del usuario logueado
+// ----------------------------
 const updatePerfil = async (req, res) => {
   const { id_user, bitacoraId } = req.user;
   const { nombre, email, sexo, telefono } = req.body;

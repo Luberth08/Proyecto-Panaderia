@@ -1,8 +1,8 @@
-// Este archivo centralizará todas las llamadas al backend usando fetch
-
 const API_URL = import.meta.env.VITE_API_URL;
 
+// ----------------------------
 // Función principal para requests
+// ----------------------------
 export async function apiRequest(endpoint, options = {}) {
   const {
     method = 'GET',
@@ -46,82 +46,95 @@ export async function apiRequest(endpoint, options = {}) {
   }
 }
 
+// ----------------------------
 // Funciones específicas para cada módulo
-
+// ----------------------------
 export const authAPI = {
+  // Login
   login: (credentials) => apiRequest('auth/login', { method: 'POST', body: credentials }),
+
+  // Logout
   logout: () => apiRequest('auth/logout', { method: 'POST' }),
 };
 
 export const usuarioAPI = {
-  getAll: () => apiRequest('api/usuario/read'),
-  getByNombre: (nombre) => apiRequest(`api/usuario/read/${nombre}`),
-  create: (usuarioData) => apiRequest('api/usuario/create', { 
+  // Obtener todos los usuarios
+  getAll: () => apiRequest('api/usuario', { method:'GET' }),
+
+  // Obtener un usuario por su nombre
+  getByNombre: (nombre) => apiRequest(`api/usuario/${nombre}`, { method: 'GET' }),
+
+  // Crear un usuario
+  create: (usuarioData) => apiRequest('api/usuario', { 
     method: 'POST', 
     body: usuarioData 
   }),
-  update: (nombre, usuarioData) => apiRequest(`api/usuario/update/${nombre}`, { 
+
+  // Actualizar un usuario
+  update: (nombre, usuarioData) => apiRequest(`api/usuario/${nombre}`, { 
     method: 'PUT', 
     body: usuarioData 
   }),
-  delete: (nombre) => apiRequest(`api/usuario/delete/${nombre}`, { 
+
+  // Eliminar un usuario
+  delete: (nombre) => apiRequest(`api/usuario/${nombre}`, { 
     method: 'DELETE' 
   }),
 };
 
 export const rolAPI = {
   // Obtener todos los roles
-  getAll: () => apiRequest('api/rol/read'),
+  getAll: () => apiRequest('api/rol', { method: 'GET' }),
   
   // Obtener rol por ID
-  getById: (id) => apiRequest(`api/rol/read/${id}`),
+  getById: (id) => apiRequest(`api/rol/${id}`, { method: 'GET' }),
   
   // Crear rol
-  create: (rolData) => apiRequest('api/rol/create', { 
+  create: (rolData) => apiRequest('api/rol', { 
     method: 'POST', 
     body: rolData 
   }),
   
   // Actualizar rol
-  update: (id, rolData) => apiRequest(`api/rol/update/${id}`, { 
+  update: (id, rolData) => apiRequest(`api/rol/${id}`, { 
     method: 'PUT', 
     body: rolData 
   }),
   
   // Eliminar rol
-  delete: (id) => apiRequest(`api/rol/delete/${id}`, { 
+  delete: (id) => apiRequest(`api/rol/${id}`, { 
     method: 'DELETE' 
   }),
 };
 
 export const permisoAPI = {
   // Obtener todos los permisos
-  getAll: () => apiRequest('api/permiso/read'),
+  getAll: () => apiRequest('api/permiso', { method: 'GET' }),
   
   // Obtener permiso por ID
-  getById: (id) => apiRequest(`api/permiso/read/${id}`),
+  getById: (id) => apiRequest(`api/permiso/${id}`, { method: 'GET' }),
   
   // Crear permiso
-  create: (permisoData) => apiRequest('api/permiso/create', { 
+  create: (permisoData) => apiRequest('api/permiso', { 
     method: 'POST', 
     body: permisoData 
   }),
   
   // Actualizar permiso
-  update: (id, permisoData) => apiRequest(`api/permiso/update/${id}`, { 
+  update: (id, permisoData) => apiRequest(`api/permiso/${id}`, { 
     method: 'PUT', 
     body: permisoData 
   }),
   
   // Eliminar permiso
-  delete: (id) => apiRequest(`api/permiso/delete/${id}`, { 
+  delete: (id) => apiRequest(`api/permiso/${id}`, { 
     method: 'DELETE' 
   }),
 };
 
 export const rolPermisoAPI = {
   // Obtener todas las asociaciones rol-permiso
-  getAll: () => apiRequest('api/rol_permiso/read'),
+  getAll: () => apiRequest('api/rol_permiso', { method: 'GET' }),
   
   // Obtener permisos por rol
   getByRol: (id_rol) => {
@@ -132,28 +145,29 @@ export const rolPermisoAPI = {
   },
   
   // Crear asociación rol-permiso
-  create: (data) => apiRequest('api/rol_permiso/create', {
+  create: (data) => apiRequest('api/rol_permiso', {
     method: 'POST',
     body: data
   }),
   
   // Eliminar asociación rol-permiso
-  delete: (id_rol, id_permiso) => apiRequest(`api/rol_permiso/delete/${id_rol}/${id_permiso}`, {
+  delete: (id_rol, id_permiso) => apiRequest(`api/rol_permiso/${id_rol}/${id_permiso}`, {
     method: 'DELETE'
   }),
 };
 
 export const perfilAPI = {
   // Obtener perfil del usuario logueado
-  getPerfil: () => apiRequest('api/perfil/read'),
+  getPerfil: () => apiRequest('api/perfil', { method: 'GET' }),
   
   // Actualizar perfil del usuario logueado
-  updatePerfil: (data) => apiRequest('api/perfil/update', {
+  updatePerfil: (data) => apiRequest('api/perfil', {
     method: 'PUT',
     body: data
   }),
 
-  cambiarContrasena: (data) => apiRequest('api/cambiar_contrasena/update', {
+  // Cambiar la contraseña del usuario logueado
+  cambiarContrasena: (data) => apiRequest('api/cambiar_contrasena', {
     method: 'PUT',
     body: data
   }),
@@ -161,131 +175,133 @@ export const perfilAPI = {
 
 export const categoriaAPI = {
   // Obtener todas las categorías
-  getAll: () => apiRequest('api/categoria/read'),
+  getAll: () => apiRequest('api/categoria', { method: 'GET' }),
   
   // Obtener categoría por ID
-  getById: (id) => apiRequest(`api/categoria/read/${id}`),
+  getById: (id) => apiRequest(`api/categoria${id}`, { method: 'GET' }),
   
   // Crear categoría
-  create: (categoriaData) => apiRequest('api/categoria/create', { 
+  create: (categoriaData) => apiRequest('api/categoria', { 
     method: 'POST', 
     body: categoriaData 
   }),
   
   // Actualizar categoría
-  update: (id, categoriaData) => apiRequest(`api/categoria/update/${id}`, { 
+  update: (id, categoriaData) => apiRequest(`api/categoria/${id}`, { 
     method: 'PUT', 
     body: categoriaData 
   }),
   
   // Eliminar categoría
-  delete: (id) => apiRequest(`api/categoria/delete/${id}`, { 
+  delete: (id) => apiRequest(`api/categoria/${id}`, { 
     method: 'DELETE' 
   }),
 };
 
 export const insumoAPI = {
   // Obtener todos los insumos
-  getAll: () => apiRequest('api/insumo/read'),
+  getAll: () => apiRequest('api/insumo', { method: 'GET' }),
   
   // Obtener insumo por ID
-  getById: (id) => apiRequest(`api/insumo/read/${id}`),
+  getById: (id) => apiRequest(`api/insumo/${id}`, { method: 'GET' }),
   
   // Crear insumo
-  create: (insumoData) => apiRequest('api/insumo/create', { 
+  create: (insumoData) => apiRequest('api/insumo', { 
     method: 'POST', 
     body: insumoData 
   }),
   
   // Actualizar insumo
-  update: (id, insumoData) => apiRequest(`api/insumo/update/${id}`, { 
+  update: (id, insumoData) => apiRequest(`api/insumo/${id}`, { 
     method: 'PUT', 
     body: insumoData 
   }),
   
   // Eliminar insumo
-  delete: (id) => apiRequest(`api/insumo/delete/${id}`, { 
+  delete: (id) => apiRequest(`api/insumo/${id}`, { 
     method: 'DELETE' 
   }),
 };
 
 export const productoAPI = {
   // Obtener todos los productos
-  getAll: () => apiRequest('api/producto/read'),
+  getAll: () => apiRequest('api/producto', { method: 'GET' }),
   
   // Obtener producto por ID
-  getById: (id) => apiRequest(`api/producto/read/${id}`),
+  getById: (id) => apiRequest(`api/producto/${id}`, { method: 'GET' }),
   
   // Crear producto
-  create: (productoData) => apiRequest('api/producto/create', { 
+  create: (productoData) => apiRequest('api/producto', { 
     method: 'POST', 
     body: productoData 
   }),
   
   // Actualizar producto
-  update: (id, productoData) => apiRequest(`api/producto/update/${id}`, { 
+  update: (id, productoData) => apiRequest(`api/producto/${id}`, { 
     method: 'PUT', 
     body: productoData 
   }),
   
   // Eliminar producto
-  delete: (id) => apiRequest(`api/producto/delete/${id}`, { 
+  delete: (id) => apiRequest(`api/producto/${id}`, { 
     method: 'DELETE' 
   }),
 };
 
 export const recetaAPI = {
   // Obtener todas las recetas
-  getAll: () => apiRequest('api/receta/read'),
+  getAll: () => apiRequest('api/receta', { method: 'GET' }),
   
   // Obtener receta por ID
-  getById: (id) => apiRequest(`api/receta/read/${id}`),
+  getById: (id) => apiRequest(`api/receta/${id}`, { method: 'GET' }),
   
   // Crear receta
-  create: (recetaData) => apiRequest('api/receta/create', { 
+  create: (recetaData) => apiRequest('api/receta', { 
     method: 'POST', 
     body: recetaData 
   }),
   
   // Actualizar receta
-  update: (id, recetaData) => apiRequest(`api/receta/update/${id}`, { 
+  update: (id, recetaData) => apiRequest(`api/receta/${id}`, { 
     method: 'PUT', 
     body: recetaData 
   }),
   
   // Eliminar receta
-  delete: (id) => apiRequest(`api/receta/delete/${id}`, { 
+  delete: (id) => apiRequest(`api/receta/${id}`, { 
     method: 'DELETE' 
   }),
 };
 
 export const proveedorAPI = {
   // Obtener todos los proveedores
-  getAll: () => apiRequest('api/proveedor/read'),
+  getAll: () => apiRequest('api/proveedor', { method: 'GET' }),
   
   // Obtener proveedor por código
-  getByCodigo: (codigo) => apiRequest(`api/proveedor/read/${codigo}`),
+  getByCodigo: (codigo) => apiRequest(`api/proveedor/${codigo}`, { method: 'GET' }),
   
   // Crear proveedor
-  create: (proveedorData) => apiRequest('api/proveedor/create', { 
+  create: (proveedorData) => apiRequest('api/proveedor', { 
     method: 'POST', 
     body: proveedorData 
   }),
   
   // Actualizar proveedor
-  update: (codigo, proveedorData) => apiRequest(`api/proveedor/update/${codigo}`, { 
+  update: (codigo, proveedorData) => apiRequest(`api/proveedor/${codigo}`, { 
     method: 'PUT', 
     body: proveedorData 
   }),
   
   // Eliminar proveedor
-  delete: (codigo) => apiRequest(`api/proveedor/delete/${codigo}`, { 
+  delete: (codigo) => apiRequest(`api/proveedor/${codigo}`, { 
     method: 'DELETE' 
   }),
 };
 
 export const bitacoraAPI = {
-  getAll: () => apiRequest('api/bitacora/read'),
-  getDetalle: (id) => apiRequest(`api/bitacora/detalle/${id}`),
-  getAllDetalles: () => apiRequest('api/bitacora/detalles')
+  // Obtener todos las bitacoras
+  getAll: () => apiRequest('api/bitacora', { method: 'GET' }),
+
+  // Obtener todos los detalle de una bitacora
+  getDetalle: (id) => apiRequest(`api/detalle_bitacora/${id}`, { method: 'GET' }),
 };

@@ -5,7 +5,7 @@ const verificarPermiso = require("../../middleware/verificar_permiso.middleware"
 
 const router = express.Router();
 
-// Ruta para cambiar contraseña
-router.put("/update", verificarPermiso("MODIFICAR_USUARIO"), cambiarContrasena);
+// Ruta para cambiar la contraseña del usuario actualmente logueado
+router.put("/", verificarPermiso("MODIFICAR_USUARIO"), cambiarContrasena);
 
 module.exports = router;

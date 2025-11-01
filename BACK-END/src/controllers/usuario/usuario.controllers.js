@@ -10,7 +10,7 @@ const createUser = async (req, res) => {
   const { bitacoraId } = req.user;
 
   try {
-    // 1. Validar formato del nombre de usuario
+    // Validar formato del nombre de usuario
     const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
     if (!usernameRegex.test(nombre)){
       return res.status(400).json({
@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
       });
     }
 
-    // 2. Validar formato del email
+    // Validar formato del email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)){
       return res.status(400).json({
@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
       });
     }
 
-    // 3. Validar que no exista el nombre o el correo
+    // Validar que no exista el nombre o el correo
     const existingUser = await pool.query(
       "SELECT * FROM usuario WHERE nombre = $1 OR email = $2",
       [nombre, email]
@@ -42,19 +42,19 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: conflict, success: false });
     }
 
-    // 4. Encriptar la contraseña
+    // Encriptar la contraseña
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(contrasena, salt);
 
-    // 5. Insertar el nuevo usuario en la base de datos
+    // Insertar el nuevo usuario en la base de datos
     const result = await pool.query(
       "INSERT INTO usuario (nombre, email, contrasena, sexo, telefono, id_rol) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
       [nombre, email, hashedPassword, sexo, telefono, id_rol]
     );
-    // 6. Registrar en bitácora
+    // Registrar en bitácora
     await logEvent(bitacoraId, "POST", "api/usuario/create", `Usuario ${nombre} creado`);
 
-    // 7. Devolver el usuario creado en la respuesta JSON
+    // Devolver el usuario creado en la respuesta JSON
     res
       .status(201)
       .json({ message: "Usuario agregado exitosamente", user: result.rows[0] });
@@ -71,7 +71,6 @@ const readUser = async (req, res) => {
   const { bitacoraId } = req.user;
 
   try {
-
     const result = await pool.query("SELECT * FROM usuario");
 
     await logEvent(bitacoraId, "GET", "api/usuario/read", "Se consultaron todos los usuarios");
