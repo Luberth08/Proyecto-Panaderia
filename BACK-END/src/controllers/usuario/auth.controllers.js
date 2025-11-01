@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../../db.js");
-const { iniciarBitacora, logEvent, cerrarBitacora } = require("../../middleware/bitacora.middleware.js");
+const { iniciarBitacora, logEvent, cerrarBitacora } = require("../../utils/bitacoraUtils.js");
 
 // ----------------------------
 // Controlador de login

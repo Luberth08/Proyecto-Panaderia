@@ -1,4 +1,3 @@
-// src/controllers/bitacora.controller.js
 const pool = require("../../db.js");
 
 // ----------------------------

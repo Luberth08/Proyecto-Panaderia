@@ -1,6 +1,6 @@
 const pool = require("../../db.js");
 const bcrypt = require("bcrypt");
-const { logEvent } = require("../../middleware/bitacora.middleware.js");
+const { logEvent } = require("../../utils/bitacoraUtils.js");
 
 // ----------------------------
 // Controlador para agregar un usuario

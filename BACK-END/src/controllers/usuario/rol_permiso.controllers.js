@@ -1,5 +1,5 @@
 const pool = require("../../db");
-const { logEvent } = require("../../middleware/bitacora.middleware.js");
+const { logEvent } = require("../../utils/bitacoraUtils.js");
 
 // ----------------------------
 // Controlador para crear una asociación rol-permiso

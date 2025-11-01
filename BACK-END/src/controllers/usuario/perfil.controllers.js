@@ -1,5 +1,5 @@
 const pool = require("../../db.js");
-const { logEvent } = require("../../middleware/bitacora.middleware.js");
+const { logEvent } = require("../../utils/bitacoraUtils.js");
 
 // ----------------------------
 // Controlador para obtener los datos del usuario logueado
