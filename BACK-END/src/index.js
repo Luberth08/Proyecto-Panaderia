@@ -14,24 +14,27 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://frontend:5173",
   "http://localhost:3000",
-  "https://proyecto-panaderia-front-f03w9yb1b-luberths-projects.vercel.app",
-  "https://proyecto-panaderia-front-end.vercel.app/login"
+  "https://proyecto-panaderia-gules.vercel.app", 
 ];
 
+
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`❌ Bloqueado por CORS: ${origin}`);
+      callback(new Error("No permitido por CORS"));
+    }
+  },
   credentials: true,
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Responder correctamente a preflight requests
-app.options("*", cors({
-  origin: allowedOrigins,
-  credentials: true,
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization']
-}));
+// Preflight
+app.options('*', cors());
+
 
 app.use(express.json());
 app.use(getClientIp);
