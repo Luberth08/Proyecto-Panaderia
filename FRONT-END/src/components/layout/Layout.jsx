@@ -82,7 +82,8 @@ export default function Layout() {
       label: 'Administrar Compra',
       expanded: expandedSections.compra,
       items: [
-        { icon: '🏢', label: 'Proveedores', path: '/proveedores' }
+        { icon: '🏢', label: 'Proveedores', path: '/proveedores' },
+        { icon: '📝', label: 'Notas de compra', path: '/nota-compra' }        
       ]
     },
     {
@@ -104,7 +105,8 @@ export default function Layout() {
       label: 'Administrar Producción',
       expanded: expandedSections.produccion,
       items: [
-        { icon: '📋', label: 'Recetas', path: '/recetas' }
+        { icon: '📋', label: 'Recetas', path: '/recetas' },
+        { icon: '🏭', label: 'Producciones', path: '/produccion' }
       ]
     },
     {

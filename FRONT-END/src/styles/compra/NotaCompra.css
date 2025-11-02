@@ -1,0 +1,27 @@
+.nota-compra-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.nota-compra-form .form-row {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.modal-actions .btn-primary {
+  background-color: var(--primary-brown);
+  color: var(--white);
+}
+
+.modal-actions .btn-secondary {
+  background-color: var(--light-brown);
+  color: var(--black);
+}

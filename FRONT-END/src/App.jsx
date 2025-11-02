@@ -13,10 +13,12 @@ import Perfil from './pages/usuario/Perfil';
 import CambiarContrasena from './pages/usuario/CambiarContrasena';
 import Permiso from './pages/usuario/Permiso';
 import Receta from './pages/produccion/Receta';
+import Produccion from './pages/produccion/Produccion';
 import Categoria from './pages/inventario/Categoria';
 import Insumo from './pages/inventario/Insumo';
 import Producto from './pages/inventario/Producto';
 import Proveedor from './pages/compra/Proveedor';
+import NotaCompra from './pages/compra/NotaCompra';
 import Bitacora from "./pages/bitacora/Bitacora";
 
 function App() {
@@ -67,9 +69,11 @@ function App() {
 
             {/* Rutas de Producción */}
             <Route path="recetas" element={<Receta />} />
+            <Route path="produccion" element={<Produccion />} />
 
             {/* Rutas de Compras */}
             <Route path="proveedores" element={<Proveedor />} />
+            <Route path="nota-compra" element={<NotaCompra />} />
 
             {/* Rutas de Auditoria*/}
             <Route path="bitacora" element={<Bitacora />} />

@@ -298,6 +298,142 @@ export const proveedorAPI = {
   }),
 };
 
+export const notaCompraAPI = {
+  // Obtener todas las notas de compra
+  getAll: () => apiRequest('api/nota_compra', { method: 'GET' }),
+
+  // Obtener nota de compra por ID
+  getById: (id) => apiRequest(`api/nota_compra/${id}`, { method: 'GET' }),
+
+  // Crear nueva nota de compra
+  create: (notaData) => apiRequest('api/nota_compra', { 
+    method: 'POST',
+    body: notaData
+  }),
+
+  // Actualizar nota de compra por ID
+  update: (id, notaData) => apiRequest(`api/nota_compra/${id}`, { 
+    method: 'PUT',
+    body: notaData
+  }),
+
+  // Eliminar nota de compra por ID
+  delete: (id) => apiRequest(`api/nota_compra/${id}`, { method: 'DELETE' }),
+};
+
+export const detalleRecetaAPI = {
+  // Obtener todas los detalle_receta
+  getAll: () => apiRequest('api/detalle_receta', { method: 'GET' }),
+
+  // Obtener unn detalle receta por sus IDs
+  getByIds: (id_receta, id_insumo) => 
+    apiRequest(`api/detalle_receta/${id_receta}/${id_insumo}`, { method: 'GET' }),
+
+  // Añadir un insumo a una receta
+  create: (detalleData) =>
+    apiRequest('api/detalle_receta', { method: 'POST', body: detalleData }),
+
+  // Añadir informacion de un insumo dado una receta
+  update: (id_receta, id_insumo, detalleData) =>
+    apiRequest(`api/detalle_receta/${id_receta}/${id_insumo}`, { method: 'PUT', body: detalleData }),
+
+  // Eliminar un insumo de una receta
+  delete: (id_receta, id_insumo) =>
+    apiRequest(`api/detalle_receta/${id_receta}/${id_insumo}`, { method: 'DELETE' }),
+};
+
+export const compraInsumoAPI = {
+  // Obtener todas las compras de insumo
+  getAll: () => apiRequest('api/compra_insumo', { method: 'GET' }),
+
+  // Obtener una compra de insumo por sus IDs
+  getByIds: (id_nota_compra, id_insumo) =>
+    apiRequest(`api/compra_insumo/${id_nota_compra}/${id_insumo}`, { method: 'GET' }),
+
+  // Añadir una compra de insumo
+  create: (data) => 
+    apiRequest('api/compra_insumo', { method: 'POST', body: data }),
+
+  // Actualizar una compra de insumo
+  update: (id_nota_compra, id_insumo, data) =>
+    apiRequest(`api/compra_insumo/${id_nota_compra}/${id_insumo}`, { method: 'PUT', body: data }),
+
+  // Eliminar una compra de insumo
+  delete: (id_nota_compra, id_insumo) =>
+    apiRequest(`api/compra_insumo/${id_nota_compra}/${id_insumo}`, { method: 'DELETE' })
+};
+
+export const compraProductoAPI = {
+  // Obtener todas las compras de insumo
+  getAll: () => apiRequest('api/compra_producto', { method: 'GET' }),
+
+  // Obtener una compra de insumo por sus IDs
+  getByIds: (id_nota_compra, id_producto) =>
+    apiRequest(`api/compra_producto/${id_nota_compra}/${id_producto}`, { method: 'GET' }),
+
+  // Añadir una compra de insumo
+  create: (data) => 
+    apiRequest('api/compra_producto', { method: 'POST', body: data }),
+
+  // Actualizar una compra de insumo
+  update: (id_nota_compra, id_producto, data) =>
+    apiRequest(`api/compra_producto/${id_nota_compra}/${id_producto}`, { method: 'PUT', body: data }),
+
+  // Eliminar una compra de insumo
+  delete: (id_nota_compra, id_producto) =>
+    apiRequest(`api/compra_producto/${id_nota_compra}/${id_producto}`, { method: 'DELETE' })
+};
+
+export const produccionAPI = {
+  // Obtener todas las producciones
+  getAll: () => apiRequest('api/produccion', { method: 'GET' }),
+
+  // Obtener producción por ID
+  getById: (id) => apiRequest(`api/produccion/${id}`, { method: 'GET' }),
+
+  // Crear nueva producción
+  create: (produccionData) => apiRequest('api/produccion', { 
+    method: 'POST',
+    body: produccionData
+  }),
+
+  // Actualizar producción por ID
+  update: (id, produccionData) => apiRequest(`api/produccion/${id}`, { 
+    method: 'PUT',
+    body: produccionData
+  }),
+
+  // Eliminar producción por ID
+  delete: (id) => apiRequest(`api/produccion/${id}`, { method: 'DELETE' }),
+};
+
+export const participaAPI = {
+  // Obtener todas las participaciones
+  getAll: () => apiRequest('api/participa', { method: 'GET' }),
+
+  // Obtener participación por IDs (usuario + producción)
+  getByIds: (id_usuario, id_produccion) =>
+    apiRequest(`api/participa/${id_usuario}/${id_produccion}`, { method: 'GET' }),
+
+  // Crear nueva participación
+  create: (participaData) => apiRequest('api/participa', { 
+    method: 'POST',
+    body: participaData
+  }),
+
+  // Actualizar participación por IDs
+  update: (id_usuario, id_produccion, participaData) =>
+    apiRequest(`api/participa/${id_usuario}/${id_produccion}`, { 
+      method: 'PUT',
+      body: participaData
+    }),
+
+  // Eliminar participación por IDs
+  delete: (id_usuario, id_produccion) =>
+    apiRequest(`api/participa/${id_usuario}/${id_produccion}`, { method: 'DELETE' }),
+};
+
+
 export const bitacoraAPI = {
   // Obtener todos las bitacoras
   getAll: () => apiRequest('api/bitacora', { method: 'GET' }),

@@ -1,15 +1,19 @@
 // src/pages/produccion/Receta.jsx
 import { useState, useEffect } from 'react';
-import { recetaAPI, productoAPI } from '../../api/api';
+import { recetaAPI, productoAPI, detalleRecetaAPI } from '../../api/api';
 import CRUDPage from '../../components/common/CRUDPage';
 import FormInput from '../../components/ui/Form/FormInput';
 import FormSelect from '../../components/ui/Form/FormSelect';
 import FormRow from '../../components/ui/Form/FormRow';
-import { useForm } from '../../hooks/useForm'; // ✅ CORREGIDO: con llaves
+import { useForm } from '../../hooks/useForm';
 import { useApi } from '../../hooks/useApi';
+import Modal from '../../components/ui/Modal/Modal';
+import DetalleRecetaForm from '../../components/ui/Form/DetalleRecetaForm';
 import '../../styles/produccion/Receta.css';
 
-// Componente de formulario para Receta
+// ----------------------------
+// Formulario de Receta
+// ----------------------------
 const RecetaForm = ({ initialData, onSubmit, onCancel, isEditing }) => {
   const [productos, setProductos] = useState([]);
   const { execute: loadProductos } = useApi(() => productoAPI.getAll(), true);
@@ -20,7 +24,6 @@ const RecetaForm = ({ initialData, onSubmit, onCancel, isEditing }) => {
       setProductos(data);
     };
     fetchProductos();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { form, handleChange, validateForm } = useForm(initialData, {
@@ -65,7 +68,6 @@ const RecetaForm = ({ initialData, onSubmit, onCancel, isEditing }) => {
           placeholder="Ej: 10"
           required
         />
-
         <FormInput
           label="Tiempo de producción (minutos)"
           name="tiempo"
@@ -90,54 +92,89 @@ const RecetaForm = ({ initialData, onSubmit, onCancel, isEditing }) => {
   );
 };
 
-// Configuración de columnas
-const recetaColumns = [
+// ----------------------------
+// Configuración de columnas de Receta
+// ----------------------------
+const recetaColumns = (onVerInsumos) => [
+  { key: 'id', title: 'ID', width: '80px' },
+  { key: 'producto', title: 'Producto', render: r => <span>{r.producto}</span> },
+  { key: 'unidades', title: 'Unidades', render: r => <span>{r.unidades}</span> },
+  { key: 'tiempo', title: 'Tiempo (min)', render: r => <span>{r.tiempo} min</span> },
   {
-    key: 'id',
-    title: 'ID',
-    width: '80px'
-  },
-  {
-    key: 'producto',
-    title: 'Producto',
-    render: (receta) => (
-      <span className="receta-producto">{receta.producto}</span>
-    )
-  },
-  {
-    key: 'unidades',
-    title: 'Unidades',
-    render: (receta) => (
-      <span className="receta-unidades">{receta.unidades}</span>
-    )
-  },
-  {
-    key: 'tiempo',
-    title: 'Tiempo (min)',
-    render: (receta) => (
-      <span className="receta-tiempo">{receta.tiempo} min</span>
+    key: 'acciones',
+    title: 'Acciones',
+    render: r => (
+      <button className="btn-secondary btn-sm" onClick={() => onVerInsumos(r)}>
+        Ver Insumos
+      </button>
     )
   }
 ];
 
-// Estado inicial
-const initialFormState = {
-  unidades: '',
-  tiempo: '',
-  id_producto: ''
-};
+// ----------------------------
+// Estado inicial de formulario
+// ----------------------------
+const initialFormState = { unidades: '', tiempo: '', id_producto: '' };
 
+// ----------------------------
 // Componente principal
+// ----------------------------
 export default function Receta() {
+  const [showInsumosModal, setShowInsumosModal] = useState(false);
+  const [recetaSeleccionada, setRecetaSeleccionada] = useState(null);
+  const [detalleData, setDetalleData] = useState([]);
+
+  const { execute: loadDetalleReceta } = useApi(() => detalleRecetaAPI.getAll(), true);
+
+  // Abrir modal de insumos filtrando por receta
+  const handleVerInsumos = async (receta) => {
+    const allDetalle = await loadDetalleReceta();
+    const filtered = allDetalle.filter(d => d.id_receta === receta.id);
+    setDetalleData(filtered);
+    setRecetaSeleccionada(receta);
+    setShowInsumosModal(true);
+  };
+
   return (
-    <CRUDPage
-      title="Recetas"
-      description="Administra las recetas de producción"
-      api={recetaAPI}
-      columns={recetaColumns}
-      FormComponent={RecetaForm}
-      initialFormState={initialFormState}
-      searchFields={['producto']}
-    />
+    <>
+      <CRUDPage
+        title="Recetas"
+        description="Administra las recetas de producción"
+        api={recetaAPI}
+        columns={recetaColumns(handleVerInsumos)}
+        FormComponent={RecetaForm}
+        initialFormState={initialFormState}
+        searchFields={['producto']}
+      />
+
+      {/* Modal de Insumos */}
+      {showInsumosModal && recetaSeleccionada && (
+        <Modal
+          isOpen={showInsumosModal}
+          onClose={() => setShowInsumosModal(false)}
+          title={`Insumos de ${recetaSeleccionada.producto}`}
+          size="large"
+        >
+          <CRUDPage
+            title={`Insumos`}
+            api={{ getAll: () => Promise.resolve(detalleData) }} // Pasamos los datos filtrados
+            columns={[
+              { key: 'insumo', title: 'Insumo', render: d => d.insumo },
+              { key: 'cantidad', title: 'Cantidad', render: d => d.cantidad },
+              { key: 'medida', title: 'Medida', render: d => d.medida }
+            ]}
+            FormComponent={DetalleRecetaForm}
+            initialFormState={{
+              id_receta: recetaSeleccionada.id,
+              id_insumo: '',
+              cantidad: '',
+              medida: ''
+            }}
+            parentId={recetaSeleccionada.id}
+            searchFields={['insumo']}
+          />
+        </Modal>
+      )}
+    </>
   );
 }
