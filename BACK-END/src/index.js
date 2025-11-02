@@ -15,7 +15,7 @@ const allowedOrigins = [
   "http://frontend:5173",
   "http://localhost:3000",
   "https://proyecto-panaderia-frontend.vercel.app",
-  "proyecto-panaderia-gules.vercel.app", 
+  "https://proyecto-panaderia-gules.vercel.app", 
 ];
 
 
