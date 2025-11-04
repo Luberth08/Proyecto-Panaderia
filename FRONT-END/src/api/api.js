@@ -433,7 +433,6 @@ export const participaAPI = {
     apiRequest(`api/participa/${id_usuario}/${id_produccion}`, { method: 'DELETE' }),
 };
 
-
 export const bitacoraAPI = {
   // Obtener todos las bitacoras
   getAll: () => apiRequest('api/bitacora', { method: 'GET' }),

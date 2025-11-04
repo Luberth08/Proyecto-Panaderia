@@ -48,7 +48,8 @@ export const useForm = (initialState = {}, validations = {}) => {
     } else if (fieldValidations.pattern && value && !fieldValidations.pattern.test(value)) {
       error = fieldValidations.message || 'Formato inválido';
     } else if (fieldValidations.custom && value) {
-      const customError = fieldValidations.custom(value);
+      // ✅ Aquí se pasa también `form`
+      const customError = fieldValidations.custom(value, form);
       if (customError) error = customError;
     }
 
@@ -61,7 +62,6 @@ export const useForm = (initialState = {}, validations = {}) => {
   };
 
   const validateForm = () => {
-    //const newErrors = {};
     let isValid = true;
 
     Object.keys(validations).forEach(fieldName => {
