@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 // ----------------------------
-// Función principal para requests
+// Función principal para request
 // ----------------------------
 export async function apiRequest(endpoint, options = {}) {
   const {
