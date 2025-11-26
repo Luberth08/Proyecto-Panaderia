@@ -20,6 +20,12 @@ import Producto from './pages/inventario/Producto';
 import Proveedor from './pages/compra/Proveedor';
 import NotaCompra from './pages/compra/NotaCompra';
 import Bitacora from "./pages/bitacora/Bitacora";
+import Cliente from './pages/venta/Cliente';
+import Pedido from './pages/venta/Pedido';
+import RealizarPedido from './pages/venta/RealizarPedido';
+import ConfirmarEntrega from './pages/venta/ConfirmarEntrega';
+import ConsultarEstado from './pages/venta/ConsultarEstado';
+import Reportes from './pages/auditoria/Reportes';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -75,8 +81,16 @@ function App() {
             <Route path="proveedores" element={<Proveedor />} />
             <Route path="nota-compra" element={<NotaCompra />} />
 
+            {/* Rutas de Venta */}
+            <Route path="clientes" element={<Cliente />} />
+            <Route path="pedidos" element={<Pedido />} />
+            <Route path="realizar-pedido" element={<RealizarPedido />} />
+            <Route path="confirmar-entrega" element={<ConfirmarEntrega />} />
+            <Route path="consultar-estado" element={<ConsultarEstado />} />
+
             {/* Rutas de Auditoria*/}
             <Route path="bitacora" element={<Bitacora />} />
+            <Route path="reportes" element={<Reportes />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/login" replace />} />

@@ -13,7 +13,9 @@ export default function Layout() {
     compra: false,
     inventario: false,
     produccion: false,
-    usuario: false
+    usuario: false,
+    venta: false,
+    auditoria: false
   });
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
@@ -110,13 +112,27 @@ export default function Layout() {
       ]
     },
     {
+      id: 'venta',
+      type: 'section',
+      icon: '💰',
+      label: 'Administrar Venta',
+      expanded: expandedSections.venta,
+      items: [
+        { icon: '📋', label: 'Gestionar Pedido del Cliente', path: '/pedidos' },
+        { icon: '✅', label: 'Confirmar Entrega de Pedido', path: '/confirmar-entrega' },
+        { icon: '➕', label: 'Realizar Pedido como Cliente', path: '/realizar-pedido' },
+        { icon: '🔍', label: 'Consultar Estado de Pedido', path: '/consultar-estado' }
+      ]
+    },
+    {
       id: 'auditoria',
       type: 'section',
       icon: '🕓',
       label: 'Auditoría del Sistema',
       expanded: expandedSections.auditoria,
       items: [
-        { icon: '📜', label: 'Bitácora', path: '/bitacora' }
+        { icon: '📜', label: 'Bitácora', path: '/bitacora' },
+        { icon: '📊', label: 'Reportes', path: '/reportes' }
       ]
     },
     {

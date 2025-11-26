@@ -70,9 +70,15 @@ app.use("/api/nota_compra", require("./routes/compra/nota_compra.routes"));
 app.use("/api/compra_insumo", require("./routes/compra/compra_insumo.routes"));
 app.use("/api/compra_producto", require("./routes/compra/compra_producto.routes"));
 
+// Rutas protegidas de Venta
+app.use("/api/cliente", require("./routes/venta/cliente.routes"));
+app.use("/api/pedido", require("./routes/venta/pedido.routes"));
+app.use("/api/detalle_pedido", require("./routes/venta/detalle_pedido.routes"));
+
 // Rutas protegidas de Auditoria
 app.use("/api/bitacora", require("./routes/auditoria/bitacora.routes"));
 app.use("/api/detalle_bitacora", require("./routes/auditoria/detalle_bitacora.routes"));
+app.use("/api/reporte", require("./routes/auditoria/reportes.routes"));
 
 // Ruta de prueba para verificar que el servidor está activo
 app.get("/ping", (req, res) => {

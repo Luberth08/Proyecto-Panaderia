@@ -440,3 +440,145 @@ export const bitacoraAPI = {
   // Obtener todos los detalle de una bitacora
   getDetalle: (id) => apiRequest(`api/detalle_bitacora/${id}`, { method: 'GET' }),
 };
+
+export const clienteAPI = {
+  // Obtener todos los clientes
+  getAll: () => apiRequest('api/cliente', { method: 'GET' }),
+  
+  // Obtener cliente por CI
+  getByCi: (ci) => apiRequest(`api/cliente/${ci}`, { method: 'GET' }),
+  
+  // Crear cliente
+  create: (clienteData) => apiRequest('api/cliente', { 
+    method: 'POST', 
+    body: clienteData 
+  }),
+  
+  // Actualizar cliente
+  update: (ci, clienteData) => apiRequest(`api/cliente/${ci}`, { 
+    method: 'PUT', 
+    body: clienteData 
+  }),
+  
+  // Eliminar cliente
+  delete: (ci) => apiRequest(`api/cliente/${ci}`, { 
+    method: 'DELETE' 
+  }),
+};
+
+export const pedidoAPI = {
+  // Obtener todos los pedidos
+  getAll: () => apiRequest('api/pedido', { method: 'GET' }),
+  
+  // Obtener pedido por ID
+  getById: (id) => apiRequest(`api/pedido/${id}`, { method: 'GET' }),
+  
+  // Obtener estado del pedido
+  getEstado: (id) => apiRequest(`api/pedido/${id}/estado`, { method: 'GET' }),
+  
+  // Crear pedido
+  create: (pedidoData) => apiRequest('api/pedido', { 
+    method: 'POST', 
+    body: pedidoData 
+  }),
+  
+  // Actualizar pedido
+  update: (id, pedidoData) => apiRequest(`api/pedido/${id}`, { 
+    method: 'PUT', 
+    body: pedidoData 
+  }),
+  
+  // Confirmar entrega de pedido
+  confirmarEntrega: (id) => apiRequest(`api/pedido/${id}/confirmar-entrega`, { 
+    method: 'PUT' 
+  }),
+  
+  // Eliminar pedido
+  delete: (id) => apiRequest(`api/pedido/${id}`, { 
+    method: 'DELETE' 
+  }),
+};
+
+export const detallePedidoAPI = {
+  // Obtener todos los detalles
+  getAll: () => apiRequest('api/detalle_pedido', { method: 'GET' }),
+  
+  // Obtener detalles de un pedido
+  getByPedidoId: (id_pedido) => apiRequest(`api/detalle_pedido/pedido/${id_pedido}`, { method: 'GET' }),
+  
+  // Obtener detalle específico
+  getByIds: (id_producto, id_pedido) => apiRequest(`api/detalle_pedido/${id_producto}/${id_pedido}`, { method: 'GET' }),
+  
+  // Crear detalle de pedido
+  create: (detalleData) => apiRequest('api/detalle_pedido', { 
+    method: 'POST', 
+    body: detalleData 
+  }),
+  
+  // Actualizar detalle de pedido
+  update: (id_producto, id_pedido, detalleData) => apiRequest(`api/detalle_pedido/${id_producto}/${id_pedido}`, { 
+    method: 'PUT', 
+    body: detalleData 
+  }),
+  
+  // Eliminar detalle de pedido
+  delete: (id_producto, id_pedido) => apiRequest(`api/detalle_pedido/${id_producto}/${id_pedido}`, { 
+    method: 'DELETE' 
+  }),
+};
+
+export const reporteAPI = {
+  // Generar reporte de ventas
+  generarReporteVentas: (formato, fecha_inicio, fecha_fin) => {
+    const params = new URLSearchParams();
+    params.append('formato', formato);
+    if (fecha_inicio) params.append('fecha_inicio', fecha_inicio);
+    if (fecha_fin) params.append('fecha_fin', fecha_fin);
+    return fetch(`${API_URL}/api/reporte/ventas?${params}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res => res.blob());
+  },
+  
+  // Generar reporte de producción
+  generarReporteProduccion: (formato, fecha_inicio, fecha_fin) => {
+    const params = new URLSearchParams();
+    params.append('formato', formato);
+    if (fecha_inicio) params.append('fecha_inicio', fecha_inicio);
+    if (fecha_fin) params.append('fecha_fin', fecha_fin);
+    return fetch(`${API_URL}/api/reporte/produccion?${params}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res => res.blob());
+  },
+  
+  // Generar reporte de inventario
+  generarReporteInventario: (formato) => {
+    const params = new URLSearchParams();
+    params.append('formato', formato);
+    return fetch(`${API_URL}/api/reporte/inventario?${params}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res => res.blob());
+  },
+  
+  // Generar reporte de pedidos y clientes
+  generarReportePedidosClientes: (formato, fecha_inicio, fecha_fin) => {
+    const params = new URLSearchParams();
+    params.append('formato', formato);
+    if (fecha_inicio) params.append('fecha_inicio', fecha_inicio);
+    if (fecha_fin) params.append('fecha_fin', fecha_fin);
+    return fetch(`${API_URL}/api/reporte/pedidos-clientes?${params}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(res => res.blob());
+  },
+};

@@ -1,0 +1,107 @@
+.consultar-estado-container {
+  padding: 2rem;
+  background: var(--color-bg, #f5f5f5);
+  border-radius: 8px;
+}
+
+.header-section {
+  margin-bottom: 2rem;
+}
+
+.header-section h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary, #333);
+}
+
+.header-section p {
+  color: var(--color-text-secondary, #666);
+  font-size: 1rem;
+}
+
+.search-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: flex-end;
+}
+
+.search-form > div {
+  flex: 1;
+}
+
+.search-form button {
+  height: 40px;
+  padding: 0 1.5rem;
+}
+
+.error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #c33;
+}
+
+.estado-resultado {
+  margin-top: 2rem;
+}
+
+.estado-card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.estado-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-border, #eee);
+}
+
+.estado-header h2 {
+  margin: 0;
+  color: var(--color-primary, #333);
+}
+
+.estado-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border, #eee);
+}
+
+.detail-row .label {
+  font-weight: 600;
+  color: var(--color-text-secondary, #666);
+}
+
+.detail-row .value {
+  color: var(--color-primary, #333);
+}
+
+@media (max-width: 768px) {
+  .search-form {
+    flex-direction: column;
+  }
+
+  .search-form button {
+    width: 100%;
+  }
+
+  .estado-details {
+    grid-template-columns: 1fr;
+  }
+}
