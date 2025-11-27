@@ -1,61 +1,57 @@
 // src/hooks/useSearch.js
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { debounce } from '../utils/helpers';
 
 export const useSearch = (data = [], searchFields = []) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');       // Lo que escribe el usuario (INSTANTÁNEO)
+  const [searchValue, setSearchValue] = useState('');     // Lo que se usa para filtrar (DEBOUNCEADO)
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+  // Debounce REAL: aplica retraso solo al valor que filtra, no al input
+  const debouncedUpdate = useMemo(
+    () =>
+      debounce((value) => {
+        setSearchValue(value);
+      }, 300),
+    []
+  );
+
+  const handleSearch = (value) => {
+    setSearchTerm(value);       // ← actualiza input INSTANTÁNEO
+    debouncedUpdate(value);     // ← filtra con retraso suave
   };
-
-  // Debounced search para mejor performance
-  const debouncedSearch = debounce(handleSearch, 300);
 
   const filteredData = useMemo(() => {
-    if (!searchTerm.trim()) return data;
+    if (!searchValue.trim()) return data;
 
-    setIsSearching(true);
-    const lowercasedSearch = searchTerm.toLowerCase().trim();
+    const lower = searchValue.toLowerCase().trim();
 
-    const filtered = data.filter(item =>
-      searchFields.some(field => {
+    return data.filter((item) =>
+      searchFields.some((field) => {
         const fieldValue = item[field];
         if (!fieldValue) return false;
-        
-        return fieldValue.toString().toLowerCase().includes(lowercasedSearch);
+        return fieldValue.toString().toLowerCase().includes(lower);
       })
     );
-
-    setIsSearching(false);
-    return filtered;
-  }, [data, searchTerm, searchFields]);
-
-  const clearSearch = () => {
-    setSearchTerm('');
-  };
+  }, [data, searchValue, searchFields]);
 
   return {
     searchTerm,
     filteredData,
-    isSearching,
-    handleSearch: debouncedSearch,
-    clearSearch,
-    setSearchTerm
+    handleSearch,
   };
 };
 
-// Hook específico para búsqueda en tablas CRUD
+// Wrapper para CRUD
 export const useCRUDSearch = (data = [], defaultSearchFields = ['nombre']) => {
   const search = useSearch(data, defaultSearchFields);
 
-  const noResultsMessage = search.searchTerm && search.filteredData.length === 0 
-    ? `No se encontraron resultados para "${search.searchTerm}"`
-    : 'No hay datos registrados';
+  const noResultsMessage =
+    search.searchValue && search.filteredData.length === 0
+      ? `No se encontraron resultados para "${search.searchValue}"`
+      : 'No hay datos registrados';
 
   return {
     ...search,
-    noResultsMessage
+    noResultsMessage,
   };
 };
