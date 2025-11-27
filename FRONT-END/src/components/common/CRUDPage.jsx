@@ -24,7 +24,7 @@ const CRUDPage = ({
   rowKey = 'id',
   
   // Configuración de formulario
-  FormComponent, // ✅ Cambiado a FormComponent (con mayúscula)
+  FormComponent,
   initialFormState,
   formValidations = {},
   
@@ -38,7 +38,8 @@ const CRUDPage = ({
   transformData,
   customActions
 }) => {
-  // Hooks para estado CRUD
+
+  // 📌 CRUD
   const { 
     items, 
     loading, 
@@ -49,7 +50,7 @@ const CRUDPage = ({
     remove 
   } = useCRUD(api);
 
-  // Hook para búsqueda
+  // 📌 BÚSQUEDA (optimizada con debounce interno)
   const { 
     searchTerm, 
     filteredData, 
@@ -57,7 +58,7 @@ const CRUDPage = ({
     noResultsMessage 
   } = useCRUDSearch(items, searchFields);
 
-  // Hooks para modales
+  // 📌 Modales
   const { 
     isOpen: showModal, 
     openModal, 
@@ -73,16 +74,17 @@ const CRUDPage = ({
     itemToDelete 
   } = useConfirmModal();
 
-  // Cargar datos al montar
+  // 📌 Cargar datos al montar
   useEffect(() => {
     fetchAll();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Transformar datos si es necesario
+
+  // 📌 Transformación opcional
   const displayData = transformData ? transformData(filteredData) : filteredData;
 
-  // Manejar creación/actualización
+
+  // 📌 Crear / actualizar
   const handleSubmit = async (formData) => {
     try {
       if (editingItem) {
@@ -96,29 +98,29 @@ const CRUDPage = ({
     }
   };
 
-  // Manejar eliminación
+  // 📌 Eliminar
   const handleDelete = async (item) => {
-    await remove(item[rowKey]);
+    console.log("Eliminando cliente:", item);
+    const result = await remove(item[rowKey]);
+    console.log("Resultado API:", result);
   };
 
-  // Abrir modal para editar
-  const handleEdit = (item) => {
-    openModal(item);
-  };
+  // 📌 Editar
+  const handleEdit = (item) => openModal(item);
 
-  // Abrir modal para crear
-  const handleCreate = () => {
-    openModal();
-  };
+  // 📌 Nuevo
+  const handleCreate = () => openModal();
 
-  // Acción por defecto del header
+
+  // 📌 Botón por defecto del header
   const defaultHeaderAction = (
     <button className="btn-primary" onClick={handleCreate}>
       + Nuevo {title}
     </button>
   );
 
-  // Renderizar acciones personalizadas o por defecto
+
+  // 📌 Acciones de tabla
   const renderActions = (item) => {
     if (customActions) {
       return customActions(item, { handleEdit, openConfirmModal });
@@ -142,7 +144,7 @@ const CRUDPage = ({
     );
   };
 
-  // Columnas con acciones
+  // 📌 Columnas con acciones
   const tableColumns = [
     ...columns,
     {
@@ -153,6 +155,7 @@ const CRUDPage = ({
     }
   ];
 
+  // 📌 Loading inicial
   if (loading && items.length === 0) {
     return (
       <div className="crud-page">
@@ -164,30 +167,30 @@ const CRUDPage = ({
 
   return (
     <div className="crud-page">
-      {/* Header */}
+      {/* Encabezado */}
       <PageHeader
         title={title}
         description={description}
-        actionButton={renderHeaderAction ? renderHeaderAction(handleCreate) : defaultHeaderAction}
+        actionButton={
+          renderHeaderAction 
+            ? renderHeaderAction(handleCreate) 
+            : defaultHeaderAction
+        }
       />
 
-      {/* Barra de búsqueda */}
+      {/* Buscador */}
       <div className="search-section">
         <SearchBar
           placeholder={searchPlaceholder || `Buscar ${title.toLowerCase()}...`}
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={(e) => handleSearch(e.target.value)}   // ← AHORA INSTANTÁNEO + DEBOUNCE
         />
       </div>
 
-      {/* Mensaje de error */}
-      {error && (
-        <div className="error-message">
-          {error}
-        </div>
-      )}
+      {/* Errores */}
+      {error && <div className="error-message">{error}</div>}
 
-      {/* Tabla de datos */}
+      {/* Tabla */}
       <DataTable
         columns={tableColumns}
         data={displayData}
@@ -197,7 +200,7 @@ const CRUDPage = ({
         rowKey={rowKey}
       />
 
-      {/* Modal de formulario */}
+      {/* Modal formulario */}
       {FormComponent && (
         <Modal
           isOpen={showModal}
@@ -215,7 +218,7 @@ const CRUDPage = ({
         </Modal>
       )}
 
-      {/* Modal de confirmación de eliminación */}
+      {/* Modal confirmación */}
       <ConfirmModal
         isOpen={showDeleteModal}
         onClose={closeConfirmModal}

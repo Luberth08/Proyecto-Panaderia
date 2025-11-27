@@ -118,6 +118,7 @@ export default function Layout() {
       label: 'Administrar Venta',
       expanded: expandedSections.venta,
       items: [
+        { icon: '👤', label: 'Clientes', path: '/clientes' },
         { icon: '📋', label: 'Gestionar Pedido del Cliente', path: '/pedidos' },
         { icon: '✅', label: 'Confirmar Entrega de Pedido', path: '/confirmar-entrega' },
         { icon: '➕', label: 'Realizar Pedido como Cliente', path: '/realizar-pedido' },
