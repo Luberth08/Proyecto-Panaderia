@@ -26,6 +26,7 @@ import RealizarPedido from './pages/venta/RealizarPedido';
 import ConfirmarEntrega from './pages/venta/ConfirmarEntrega';
 import ConsultarEstado from './pages/venta/ConsultarEstado';
 import Reportes from './pages/auditoria/Reportes';
+import ReportesIA from './pages/reportes-ia/ReportesIA';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -91,6 +92,7 @@ function App() {
             {/* Rutas de Auditoria*/}
             <Route path="bitacora" element={<Bitacora />} />
             <Route path="reportes" element={<Reportes />} />
+            <Route path="reportes-ia" element={<ReportesIA />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/login" replace />} />

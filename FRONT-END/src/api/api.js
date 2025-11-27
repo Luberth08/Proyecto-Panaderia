@@ -582,3 +582,103 @@ export const reporteAPI = {
     }).then(res => res.blob());
   },
 };
+
+// ----------------------------
+// API para Reportes IA
+// ----------------------------
+const IA_REPORTES_URL = import.meta.env.VITE_IA_REPORTES_URL || 'http://localhost:5001';
+
+export const reportesIAAPI = {
+  // Verificar estado del servicio IA
+  verificarEstado: async () => {
+    try {
+      const response = await fetch(`${IA_REPORTES_URL}/api/health`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error verificando estado IA:', error);
+      throw error;
+    }
+  },
+
+  // Obtener tipos de reportes disponibles
+  obtenerTiposReportes: async () => {
+    try {
+      const response = await fetch(`${IA_REPORTES_URL}/api/reportes/tipos`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error obteniendo tipos:', error);
+      throw error;
+    }
+  },
+
+  // Generar reporte con IA
+  generarReporte: async (tipoReporte, promptCustom, fechaInicio, fechaFin, formatos = ['json'], incluirGraficos = true) => {
+    try {
+      const response = await fetch(`${IA_REPORTES_URL}/api/reportes/generar`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tipo_reporte: tipoReporte,
+          prompt_custom: promptCustom,
+          fecha_inicio: fechaInicio,
+          fecha_fin: fechaFin,
+          formatos: formatos,
+          incluir_graficos: incluirGraficos,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error generando reporte IA:', error);
+      throw error;
+    }
+  },
+
+  // Preview de reporte (sin generar archivos)
+  previewReporte: async (tipoReporte, fechaInicio, fechaFin) => {
+    try {
+      const params = new URLSearchParams();
+      if (fechaInicio) params.append('fecha_inicio', fechaInicio);
+      if (fechaFin) params.append('fecha_fin', fechaFin);
+
+      const response = await fetch(
+        `${IA_REPORTES_URL}/api/reportes/preview/${tipoReporte}?${params}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error obteniendo preview:', error);
+      throw error;
+    }
+  },
+
+  // Descargar archivo (PDF o Excel)
+  descargarArchivo: async (rutaArchivo, nombreArchivo) => {
+    try {
+      const response = await fetch(`${IA_REPORTES_URL}/${rutaArchivo}`);
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', nombreArchivo);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error descargando archivo:', error);
+      throw error;
+    }
+  },
+};

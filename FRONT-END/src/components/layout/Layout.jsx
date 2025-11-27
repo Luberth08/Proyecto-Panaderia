@@ -132,7 +132,8 @@ export default function Layout() {
       expanded: expandedSections.auditoria,
       items: [
         { icon: '📜', label: 'Bitácora', path: '/bitacora' },
-        { icon: '📊', label: 'Reportes', path: '/reportes' }
+        { icon: '📊', label: 'Reportes', path: '/reportes' },
+        { icon: '🤖', label: 'Reportes IA', path: '/reportes-ia' }
       ]
     },
     {
