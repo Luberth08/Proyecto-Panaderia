@@ -1,20 +1,24 @@
-from openai import OpenAI
-from src.config.settings import OPENAI_API_KEY, MODEL_IA, TEMPERATURE, MAX_TOKENS
+import requests
 import logging
 import json
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 class IAService:
-    """Servicio de integración con OpenAI API"""
+    """Servicio de integración con Google Gemini API REST"""
     
     def __init__(self):
-        # Inicializar cliente OpenAI
-        self.client = OpenAI(api_key=OPENAI_API_KEY)
-        self.model = MODEL_IA
+        # Importar configuración
+        from src.config.settings import GEMINI_API_KEY, GEMINI_MODEL, GEMINI_BASE_URL, TEMPERATURE, MAX_TOKENS
+        
+        self.api_key = GEMINI_API_KEY
+        self.model = GEMINI_MODEL
+        self.base_url = GEMINI_BASE_URL
         self.temperature = TEMPERATURE
         self.max_tokens = MAX_TOKENS
-        logger.info(f"IAService inicializado con OpenAI modelo: {self.model}")
+        
+        logger.info(f"IAService inicializado con Google Gemini API REST: {self.model}")
     
     def generar_reporte(self, prompt: str, datos_contexto: dict = None) -> dict:
         """
@@ -31,25 +35,45 @@ class IAService:
             # Construir prompt con contexto
             prompt_completo = self._construir_prompt(prompt, datos_contexto)
             
-            # Llamar a OpenAI
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[
+            # URL del endpoint
+            url = f"{self.base_url}/{self.model}:generateContent"
+            
+            # Headers
+            headers = {
+                'Content-Type': 'application/json',
+                'X-goog-api-key': self.api_key
+            }
+            
+            # Payload
+            payload = {
+                "contents": [
                     {
-                        "role": "system",
-                        "content": self._system_prompt()
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt_completo
+                        "parts": [
+                            {
+                                "text": prompt_completo
+                            }
+                        ]
                     }
                 ],
-                temperature=self.temperature,
-                max_tokens=self.max_tokens
-            )
+                "generationConfig": {
+                    "temperature": self.temperature,
+                    "maxOutputTokens": self.max_tokens,
+                }
+            }
             
-            contenido = response.choices[0].message.content
-            logger.info("Reporte generado exitosamente con OpenAI")
+            # Hacer request
+            response = requests.post(url, json=payload, headers=headers, timeout=60)
+            
+            # Verificar respuesta
+            if response.status_code != 200:
+                logger.error(f"Error en Gemini API: {response.status_code} - {response.text}")
+                raise Exception(f"Gemini API error: {response.status_code} - {response.text}")
+            
+            # Parsear respuesta
+            data = response.json()
+            contenido = data['candidates'][0]['content']['parts'][0]['text']
+            
+            logger.info("Reporte generado exitosamente con Google Gemini")
             
             return self._parsear_respuesta(contenido)
             
@@ -104,8 +128,9 @@ class IAService:
             raise
     
     def _construir_prompt(self, prompt_usuario: str, contexto: dict = None) -> str:
-        """Construye el prompt final con contexto"""
-        prompt_final = prompt_usuario
+        """Construye el prompt final con contexto y system instructions"""
+        # Incluir system prompt como parte del contenido
+        prompt_final = f"{self._system_prompt()}\n\n---\n\n{prompt_usuario}"
         
         if contexto:
             prompt_final += f"\n\nContexto adicional:\n{json.dumps(contexto, indent=2, default=str)}"
@@ -138,12 +163,53 @@ class IAService:
         try:
             # Intentar parsear como JSON
             respuesta = json.loads(contenido)
+            return respuesta
         except:
-            # Si no es JSON válido, estructurar la respuesta
+            # Si no es JSON válido, estructurar la respuesta extrayendo secciones
             respuesta = {
                 "analysis": contenido,
                 "insights": [],
                 "recomendaciones": []
             }
-        
-        return respuesta
+            
+            # Intentar extraer insights del texto
+            if "insight" in contenido.lower():
+                # Buscar líneas que comiencen con "- " o "* " después de "Insights"
+                lineas = contenido.split('\n')
+                en_insights = False
+                for linea in lineas:
+                    if 'insight' in linea.lower():
+                        en_insights = True
+                        continue
+                    if en_insights and (linea.strip().startswith('-') or linea.strip().startswith('*')):
+                        insight = linea.strip().lstrip('-*').strip()
+                        if insight and len(insight) > 5:  # Evitar líneas muy cortas
+                            respuesta['insights'].append(insight)
+                    elif en_insights and linea.strip() == '':
+                        continue
+                    elif en_insights and not (linea.strip().startswith('-') or linea.strip().startswith('*')):
+                        en_insights = False
+            
+            # Intentar extraer recomendaciones del texto
+            if "recomendación" in contenido.lower():
+                lineas = contenido.split('\n')
+                en_recom = False
+                for linea in lineas:
+                    if 'recomendación' in linea.lower():
+                        en_recom = True
+                        continue
+                    if en_recom and (linea.strip().startswith('-') or linea.strip().startswith('*')):
+                        recom = linea.strip().lstrip('-*').strip()
+                        if recom and len(recom) > 5:
+                            respuesta['recomendaciones'].append(recom)
+                    elif en_recom and linea.strip() == '':
+                        continue
+                    elif en_recom and not (linea.strip().startswith('-') or linea.strip().startswith('*')):
+                        en_recom = False
+            
+            # Si no encontró insights/recomendaciones, fragmentar el analysis en párrafos para insights
+            if not respuesta['insights']:
+                parrafos = contenido.split('\n\n')
+                respuesta['insights'] = [p.strip() for p in parrafos[1:4] if p.strip() and len(p.strip()) > 20][:5]
+            
+            return respuesta

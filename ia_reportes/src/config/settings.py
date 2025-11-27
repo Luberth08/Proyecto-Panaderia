@@ -20,10 +20,18 @@ DB_CONFIG = {
 }
 
 # ===== OPENAI / IA =====
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
-MODEL_IA = os.getenv('MODEL_IA', 'gpt-4')
-TEMPERATURE = float(os.getenv('TEMPERATURE', 0.7))
-MAX_TOKENS = int(os.getenv('MAX_TOKENS', 2000))
+# OpenAI Configuration (Comentado)
+# OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
+# MODEL_IA = os.getenv('OPENAI_MODEL', 'gpt-4')
+
+# ===== GOOGLE GEMINI / IA =====
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash')
+GEMINI_BASE_URL = os.getenv('GEMINI_BASE_URL', 'https://generativelanguage.googleapis.com/v1beta/models')
+
+# Parámetros generales de IA
+TEMPERATURE = float(os.getenv('GEMINI_TEMPERATURE', 0.7))
+MAX_TOKENS = int(os.getenv('GEMINI_MAX_TOKENS', 2000))
 
 # ===== RUTAS =====
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

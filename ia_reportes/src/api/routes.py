@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from datetime import datetime, timedelta
 import logging
 import json
+import os
 
-from src.config.settings import FLASK_HOST, FLASK_PORT, OPENAI_API_KEY
+from src.config.settings import FLASK_HOST, FLASK_PORT, GEMINI_API_KEY, REPORTS_OUTPUT_DIR
 from src.services.database_service import DatabaseService
 from src.services.ia_service import IAService
 from src.generators.pdf_generator import PDFGenerator
@@ -306,19 +307,72 @@ def _obtener_datos_reporte(tipo_reporte: str, fecha_inicio: str, fecha_fin: str)
         datos['por_categoria'] = db_service.get_ventas_por_categoria(fecha_inicio, fecha_fin)
         datos['top_productos'] = db_service.get_productos_mas_vendidos(fecha_inicio, fecha_fin)
         datos['clientes'] = db_service.get_clientes_datos(fecha_inicio, fecha_fin)
+        
+        # Calcular métricas de resumen para VENTAS
+        ventas = datos.get('ventas', [])
+        if ventas:
+            datos['total_ventas'] = sum(float(v.get('total', 0)) for v in ventas)
+            datos['cantidad_ordenes'] = len(ventas)
+            datos['ticket_promedio'] = datos['total_ventas'] / datos['cantidad_ordenes'] if datos['cantidad_ordenes'] > 0 else 0
+            datos['productos_vendidos'] = sum(int(v.get('cantidad_items', 0)) for v in ventas)
+            datos['clientes_unicos'] = len(set(str(v.get('cliente', '')) for v in ventas))
+        else:
+            datos['total_ventas'] = 0
+            datos['cantidad_ordenes'] = 0
+            datos['ticket_promedio'] = 0
+            datos['productos_vendidos'] = 0
+            datos['clientes_unicos'] = 0
     
     elif tipo_reporte == 'INVENTARIO':
         datos['inventario'] = db_service.get_inventario_datos()
         datos['productos'] = db_service.get_productos_stock()
+        
+        # Calcular métricas de resumen para INVENTARIO
+        productos = datos.get('productos', [])
+        if productos:
+            datos['stock_total'] = sum(float(p.get('stock', 0)) for p in productos if p.get('stock'))
+            datos['cantidad_items'] = len(productos)
+            datos['items_bajo_stock'] = len([p for p in productos if float(p.get('stock', 0)) < float(p.get('stock_minimo', 1))])
+            datos['rotacion_promedio'] = sum(float(p.get('rotacion', 0)) for p in productos) / len(productos) if productos else 0
+        else:
+            datos['stock_total'] = 0
+            datos['cantidad_items'] = 0
+            datos['items_bajo_stock'] = 0
+            datos['rotacion_promedio'] = 0
     
     elif tipo_reporte == 'PRODUCCION':
         datos['produccion'] = db_service.get_produccion_datos(fecha_inicio, fecha_fin)
+        
+        # Calcular métricas para PRODUCCION
+        produccion = datos.get('produccion', [])
+        if produccion:
+            datos['total_produccion'] = len(produccion)
+            datos['produccion_exitosa'] = len([p for p in produccion if p.get('estado') == 'completada'])
+        else:
+            datos['total_produccion'] = 0
+            datos['produccion_exitosa'] = 0
     
     elif tipo_reporte == 'COMPRAS':
         datos['compras'] = db_service.get_compras_datos(fecha_inicio, fecha_fin)
+        
+        # Calcular métricas para COMPRAS
+        compras = datos.get('compras', [])
+        if compras:
+            datos['total_compras'] = sum(float(c.get('total', 0)) for c in compras)
+            datos['cantidad_compras'] = len(compras)
+        else:
+            datos['total_compras'] = 0
+            datos['cantidad_compras'] = 0
     
     elif tipo_reporte == 'CLIENTES':
         datos['clientes'] = db_service.get_clientes_datos(fecha_inicio, fecha_fin)
+        
+        # Calcular métricas para CLIENTES
+        clientes = datos.get('clientes', [])
+        if clientes:
+            datos['cantidad_clientes'] = len(clientes)
+        else:
+            datos['cantidad_clientes'] = 0
     
     return datos
 
@@ -370,6 +424,46 @@ def _generar_graficos_reporte(tipo_reporte: str, datos: dict) -> dict:
         logger.error(f"Error generando gráficos: {str(e)}")
     
     return graficos
+
+@app.route('/api/reportes/descargar/<path:ruta_archivo>', methods=['GET'])
+def descargar_archivo(ruta_archivo):
+    """Descarga un archivo de reporte"""
+    try:
+        import os
+        from flask import send_file
+        
+        # Validar que la ruta sea segura (no contenga ..)
+        if '..' in ruta_archivo:
+            logger.error(f"Intento de acceso a ruta no permitida: {ruta_archivo}")
+            return jsonify({'error': 'Ruta no permitida'}), 403
+        
+        # Construir ruta completa
+        ruta_completa = os.path.join(REPORTS_OUTPUT_DIR, ruta_archivo)
+        
+        # Validar que el archivo exista
+        if not os.path.exists(ruta_completa):
+            logger.error(f"Archivo no encontrado: {ruta_completa}")
+            return jsonify({'error': 'Archivo no encontrado'}), 404
+        
+        # Obtener nombre del archivo
+        nombre_archivo = os.path.basename(ruta_completa)
+        
+        # Determinar tipo MIME
+        if ruta_archivo.endswith('.pdf'):
+            mime_type = 'application/pdf'
+        elif ruta_archivo.endswith('.xlsx'):
+            mime_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        elif ruta_archivo.endswith('.png'):
+            mime_type = 'image/png'
+        else:
+            mime_type = 'application/octet-stream'
+        
+        logger.info(f"Descargando archivo: {ruta_completa}")
+        return send_file(ruta_completa, as_attachment=True, download_name=nombre_archivo, mimetype=mime_type)
+        
+    except Exception as e:
+        logger.error(f"Error descargando archivo: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
 # ===== INICIO =====
 

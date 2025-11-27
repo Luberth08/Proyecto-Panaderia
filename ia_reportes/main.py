@@ -29,11 +29,11 @@ if __name__ == '__main__':
     logger.info("Documentacion: /docs o accede a /api/health")
     
     # Importar y ejecutar app Flask
-    from src.config.settings import FLASK_HOST, FLASK_PORT, OPENAI_API_KEY
+    from src.config.settings import FLASK_HOST, FLASK_PORT, GEMINI_API_KEY
     
-    if not OPENAI_API_KEY or OPENAI_API_KEY == 'your_openai_api_key_here':
-        logger.error("⚠️  ERROR: OPENAI_API_KEY no configurada correctamente")
-        logger.error("Por favor configura tu .env con una API key válida")
+    if not GEMINI_API_KEY or GEMINI_API_KEY == 'your_gemini_api_key_here':
+        logger.error("⚠️  ERROR: GEMINI_API_KEY no configurada correctamente")
+        logger.error("Por favor configura tu .env con una API key válida de Google Gemini")
         sys.exit(1)
     
     app.run(host=FLASK_HOST, port=FLASK_PORT, debug=True)

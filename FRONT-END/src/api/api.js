@@ -665,13 +665,31 @@ export const reportesIAAPI = {
   // Descargar archivo (PDF o Excel)
   descargarArchivo: async (rutaArchivo, nombreArchivo) => {
     try {
-      const response = await fetch(`${IA_REPORTES_URL}/${rutaArchivo}`);
+      // Extraer solo el nombre del archivo (sin carpetas)
+      // Puede venir como: "outputs/Reporte_Ventas_20251127_070454.pdf" o "D:\...\outputs\Reporte_..."
+      let nombreFile = rutaArchivo.split('\\').pop() || rutaArchivo.split('/').pop();
+      
+      // Si aún contiene "outputs/", extraer lo que viene después
+      if (nombreFile.includes('/')) {
+        nombreFile = nombreFile.split('/').pop();
+      }
+      if (nombreFile.includes('\\')) {
+        nombreFile = nombreFile.split('\\').pop();
+      }
+      
+      // Usar la nueva ruta de descarga del API
+      const response = await fetch(`${IA_REPORTES_URL}/api/reportes/descargar/${nombreFile}`);
+      
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+      
       const blob = await response.blob();
 
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', nombreArchivo);
+      link.setAttribute('download', nombreArchivo || nombreFile);
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);

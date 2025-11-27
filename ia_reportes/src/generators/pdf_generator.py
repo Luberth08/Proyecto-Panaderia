@@ -133,16 +133,61 @@ class PDFGenerator:
             # Resumen
             elements.append(Paragraph("ESTADO ACTUAL DEL INVENTARIO", self.styles['Subtitulo']))
             elementos_resumen = [
-                ['Stock Total (Valor)', f"${datos.get('stock_total_valor', 0):,.2f}"],
+                ['Stock Total (Valor)', f"${datos.get('stock_total', 0):,.2f}"],
                 ['Cantidad de Items', str(datos.get('cantidad_items', 0))],
-                ['Items Bajo Stock', str(datos.get('productos_bajo_stock', 0))],
+                ['Items Bajo Stock', str(datos.get('items_bajo_stock', 0))],
                 ['Rotación Promedio', f"{datos.get('rotacion_promedio', 0):.2f} veces/mes"],
-                ['Items Sin Movimiento', str(datos.get('items_sin_movimiento', 0))],
             ]
             
             tabla_estado = Table([[k, v] for k, v in elementos_resumen], colWidths=[3*inch, 2*inch])
             tabla_estado.setStyle(self._tabla_estilo_standar())
             elements.append(tabla_estado)
+            elements.append(Spacer(1, 0.3*inch))
+            
+            # Detalle de productos
+            productos = datos.get('productos', [])
+            if productos:
+                elements.append(Paragraph("DETALLE DE PRODUCTOS", self.styles['Subtitulo']))
+                elementos_productos = [['Producto', 'Stock', 'Stock Mínimo', 'Estado']]
+                
+                for prod in productos[:15]:  # Primeros 15 productos
+                    stock = float(prod.get('stock', 0))
+                    stock_min = float(prod.get('stock_minimo', 1))
+                    estado = 'Bajo Stock' if stock < stock_min else 'Normal'
+                    
+                    elementos_productos.append([
+                        str(prod.get('nombre', 'N/A'))[:30],
+                        str(int(stock)),
+                        str(int(stock_min)),
+                        estado
+                    ])
+                
+                tabla_productos = Table(elementos_productos, colWidths=[2.5*inch, 1*inch, 1.2*inch, 1.3*inch])
+                tabla_productos.setStyle(self._tabla_estilo_standar())
+                elements.append(tabla_productos)
+                elements.append(Spacer(1, 0.3*inch))
+            
+            # Análisis de IA
+            if datos.get('analysis'):
+                elements.append(Paragraph("ANÁLISIS INTELIGENTE", self.styles['Subtitulo']))
+                elements.append(Paragraph(str(datos.get('analysis', ''))[:500], self.styles['Normal']))
+                elements.append(Spacer(1, 0.2*inch))
+            
+            # Insights
+            if datos.get('insights'):
+                elements.append(Paragraph("INSIGHTS CLAVE", self.styles['Subtitulo']))
+                for insight in datos.get('insights', [])[:5]:
+                    elements.append(Paragraph(f"• {insight}", self.styles['Normal']))
+                elements.append(Spacer(1, 0.3*inch))
+            
+            # Recomendaciones
+            if datos.get('recomendaciones'):
+                elements.append(Paragraph("RECOMENDACIONES", self.styles['Subtitulo']))
+                for recom in datos.get('recomendaciones', [])[:5]:
+                    elements.append(Paragraph(f"• {recom}", self.styles['Normal']))
+            
+            # Pie de página
+            elements.extend(self._crear_pie_pagina())
             
             doc.build(elements)
             logger.info(f"PDF de inventario generado: {filename}")
